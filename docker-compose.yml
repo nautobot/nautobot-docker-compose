@@ -13,19 +13,16 @@ services:
       - "$PWD/certs/nginx-selfsigned.crt:/etc/ssl/certs/nautobot.crt"
       - "$PWD/certs/nginx-selfsigned.key:/etc/ssl/private/nautobot.key"
   nautobot:
-    image: "whitej6/nautobot:v1.0.0b2"
+    image: "nniehoff/nautobot:v0.0.1"
     env_file:
       - ".env"
-    volumes:
-      - "./environment/nautobot_config.py:/etc/nautobot/nautobot_config.py"
   nautobot-worker:
-    image: "whitej6/nautobot:v1.0.0b2"
+    image: "nniehoff/nautobot:v0.0.1"
     env_file:
       - ".env"
-    # Need to get the worker command
-    command: sh -c "nautobot-server rqworker"
-    volumes:
-      - "./environment/nautobot_config.py:/etc/nautobot/nautobot_config.py"
+    entrypoint: "nautobot-server rqworker"
+    depends_on:
+      - nautobot
   redis-cacheops:
     image: "redis:alpine"
     env_file:
@@ -33,15 +30,15 @@ services:
     command:
       - sh
       - -c  # this is to evaluate the $REDIS_PASSWORD from the env
-      - redis-server --appendonly yes --requirepass $$REDIS_PASSWORD  ## $$ because of docker-compose
-  redis-queue:  # This may need to change at some point, to match whatever is in the docs when multiple redis instances are used
+      - redis-server --appendonly yes --requirepass $$NAUTOBOT_REDIS_PASSWORD  ## $$ because of docker-compose
+  redis-queue:
     image: "redis:alpine"
     env_file:
       - ".env"
     command:
       - sh
       - -c  # this is to evaluate the $REDIS_PASSWORD from the env
-      - redis-server --appendonly yes --requirepass $$REDIS_PASSWORD  ## $$ because of docker-compose
+      - redis-server --appendonly yes --requirepass $$NAUTOBOT_REDIS_PASSWORD  ## $$ because of docker-compose
   postgres:
     image: postgres:10
     env_file:
