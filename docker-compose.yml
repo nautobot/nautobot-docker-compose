@@ -1,23 +1,26 @@
 ---
 version: "3.7"
 services:
-  web:
-    image: "nginx:stable"
-    depends_on:
-      - nautobot
+  # web:
+  #   image: "nginx:stable"
+  #   depends_on:
+  #     - nautobot
+  #   ports:
+  #     - "8443:8443"
+  #     - "8080:8080"
+  #   volumes:
+  #     - "./nginx.conf:/etc/nginx/nginx.conf"
+  #     - "$PWD/certs/nginx-selfsigned.crt:/etc/ssl/certs/nautobot.crt"
+  #     - "$PWD/certs/nginx-selfsigned.key:/etc/ssl/private/nautobot.key"
+  nautobot:
+    image: "nniehoff/nautobot:v0.0.5"
+    env_file:
+      - ".env"
     ports:
       - "8443:8443"
       - "8080:8080"
-    volumes:
-      - "./nginx.conf:/etc/nginx/nginx.conf"
-      - "$PWD/certs/nginx-selfsigned.crt:/etc/ssl/certs/nautobot.crt"
-      - "$PWD/certs/nginx-selfsigned.key:/etc/ssl/private/nautobot.key"
-  nautobot:
-    image: "nniehoff/nautobot:v0.0.1"
-    env_file:
-      - ".env"
   nautobot-worker:
-    image: "nniehoff/nautobot:v0.0.1"
+    image: "nniehoff/nautobot:v0.0.5"
     env_file:
       - ".env"
     entrypoint: "nautobot-server rqworker"
