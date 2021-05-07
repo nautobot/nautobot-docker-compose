@@ -1,15 +1,28 @@
 # SSL Self Signed Certificate
-A self signed certificate is required to launch Nautobot via docker-compose. You may provide your own certificate by moving them to the `certs` dir with the names `nginx-selfsigned.key` and `nginx-selfsigned.crt`
+By default the Docker image comes with a self signed certificate that is valid for one year. To provide a different certificate, the file names names `nautobot.key` and `nautobot.crt` within the `/opt/nautobot/` directory is required. With these files present on the host running the Docker compose, use the following as volume mounts into the `nautobot` container.
 
-```
-cp path/to/your/selfsigned-cert.key ./certs/nginx-selfsigned.key
-cp path/to/your/selfsigned-cert.crt ./certs/nginx-selfsigned.crt
+```yaml
+  nautobot:
+    image: "networktocode/nautobot:latest"
+    env_file:
+      - ".env"
+    ports:
+      - "8443:8443"
+      - "8080:8080"
+    restart: "unless-stopped"
+    volumes:
+      - path/to/your/nautobot.key /opt/nautobot/nautobot.key
+      - path/to/your/nautobot.crt /opt/nautobot/nautobot.crt
 ```
 
-## OpenSSL
+## Make Own Cert Options (Not Required)
+
+### OpenSSL
+
 If you do not have your own self signed certificate, you may generate them by using OpenSSL.
 
-### Install OpenSSL
+#### Install OpenSSL
+
 OpenSSL is included with many UNIX operating systems, but may need to be installed on your system first.
 
 Check to see if OpenSSL is installed on your system
@@ -20,10 +33,11 @@ LibreSSL 2.8.3
 
 If you do not have OpenSSL installed, please follow the [installation guidelines](https://github.com/openssl/openssl#build-and-install).
 
-### Run self sign cert
+#### Example Self Sign Cert
+
 Once OpenSSL is installed, run the following command to generate the certificates.
 ```
-sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ./certs/nginx-selfsigned.key -out ./certs/nginx-selfsigned.crt
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ./certs/nautobot.key -out ./certs/nautobot.crt
 ```
 
 You will be prompted with information to fill out for your certificate.
@@ -40,8 +54,9 @@ Email Address []:admin@your_domain.com
 Finally, ensure your newly generated certificates are in the correct location.
 ```
 user@ntc# ls ./certs/
-nginx-selfsigned.crt    nginx-selfsigned.key
+nautobot.crt    nautobot.key
 ```
 
-## Let's Encrypt
+### Let's Encrypt
+
 Place holder for Let's Encrypt

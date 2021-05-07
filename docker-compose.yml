@@ -1,31 +1,22 @@
 ---
 version: "3.7"
 services:
-  # web:
-  #   image: "nginx:stable"
-  #   depends_on:
-  #     - nautobot
-  #   ports:
-  #     - "8443:8443"
-  #     - "8080:8080"
-  #   volumes:
-  #     - "./nginx.conf:/etc/nginx/nginx.conf"
-  #     - "$PWD/certs/nginx-selfsigned.crt:/etc/ssl/certs/nautobot.crt"
-  #     - "$PWD/certs/nginx-selfsigned.key:/etc/ssl/private/nautobot.key"
   nautobot:
-    image: "nniehoff/nautobot:v0.0.5"
+    image: "networktocode/nautobot:latest"
     env_file:
       - ".env"
     ports:
       - "8443:8443"
       - "8080:8080"
+    restart: "unless-stopped"
   nautobot-worker:
-    image: "nniehoff/nautobot:v0.0.5"
+    image: "networktocode/nautobot:latest"
     env_file:
       - ".env"
     entrypoint: "nautobot-server rqworker"
     depends_on:
       - nautobot
+    restart: "unless-stopped"
   redis-cacheops:
     image: "redis:alpine"
     env_file:
@@ -34,6 +25,7 @@ services:
       - sh
       - -c  # this is to evaluate the $REDIS_PASSWORD from the env
       - redis-server --appendonly yes --requirepass $$NAUTOBOT_REDIS_PASSWORD  ## $$ because of docker-compose
+    restart: "unless-stopped"
   redis-queue:
     image: "redis:alpine"
     env_file:
@@ -42,11 +34,13 @@ services:
       - sh
       - -c  # this is to evaluate the $REDIS_PASSWORD from the env
       - redis-server --appendonly yes --requirepass $$NAUTOBOT_REDIS_PASSWORD  ## $$ because of docker-compose
+    restart: "unless-stopped"
   postgres:
     image: postgres:10
     env_file:
       - ".env"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    restart: "unless-stopped"
 volumes:
   postgres_data:
