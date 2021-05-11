@@ -1,6 +1,6 @@
 # PLUGINS
 
-To add plugins the strategy is going to be to take the existing container and install the plugins system on top of it.
+To add plugins you will need to build a custom container with the plugin installed.
 
 ## Getting Started
 
