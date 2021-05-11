@@ -34,7 +34,7 @@ The `docker-compose.override.yml` overrides settings from the primary docker-com
       dockerfile: Dockerfile-Plugins
 ```
 
-This indicates to build the image name `networktocode/nautobot-plugins:latest` from the Dockerfile `Dockerfile-Plugins`. Then that image is what is used for the Nautobot container image.
+This indicates to build the image name `yourrepo/nautobot-plugins:latest` from the Dockerfile `Dockerfile-Plugins`. Then that image is what is used for the Nautobot container image.
 
 ## Nautobot Configuration
 
