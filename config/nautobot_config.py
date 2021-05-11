@@ -189,10 +189,6 @@ HIDE_RESTRICTED_UI = is_truthy(os.getenv("NAUTOBOT_HIDE_RESTRICTED_UI", False))
 # Nautobot from an internal IP.
 INTERNAL_IPS = ("127.0.0.1", "::1")
 
-# Enable custom logging. Please see the Django documentation for detailed guidance on configuring custom logs:
-#   https://docs.djangoproject.com/en/stable/topics/logging/
-LOGGING = {}
-
 # Setting this to True will display a "maintenance mode" banner at the top of every page.
 MAINTENANCE_MODE = is_truthy(os.getenv("NAUTOBOT_MAINTENANCE_MODE", False))
 
