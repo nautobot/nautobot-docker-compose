@@ -28,7 +28,7 @@ RUN nautobot-server post_upgrade
 The `docker-compose.override.yml` overrides settings from the primary docker-compose file. In this case there needs to be a new Docker image file that is used to provide the Nautobot container. The key within the `docker-compose.override.yml` file is:
 
 ```yaml
-    image: "networktocode/nautobot-plugins:latest"
+    image: "yourrepo/nautobot-plugins:latest"
     build:
       context: .
       dockerfile: Dockerfile-Plugins
