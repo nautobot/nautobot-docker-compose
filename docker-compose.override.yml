@@ -2,7 +2,7 @@
 version: "3.7"
 services:
   nautobot:
-    image: "networktocode/nautobot-plugins:latest"
+    image: "yourrepo/nautobot-plugins:latest"
     build:
       context: .
       dockerfile: Dockerfile-Plugins
