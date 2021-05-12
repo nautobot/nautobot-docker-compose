@@ -37,3 +37,7 @@ After the containers have started:
 
 1. Enter the bash shell for the `nautobot` container
 2. Execute `nautobot-server createsuperuser`
+
+## Plugins
+
+For plugin documentation, see the [docs](docs/plugins.md).

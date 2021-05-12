@@ -1,0 +1,6 @@
+FROM networktocode/nautobot:latest
+
+COPY ./plugin_requirements.txt /opt/nautobot/
+RUN pip install --no-warn-script-location -r /opt/nautobot/plugin_requirements.txt
+
+COPY config/nautobot_config.py /opt/nautobot/nautobot_config.py
