@@ -12,3 +12,11 @@ services:
       - "8443:8443"
       - "8080:8080"
     restart: "unless-stopped"
+  nautobot-worker:
+    image: "yourrepo/nautobot-plugins:latest"
+    build:
+      context: .
+      dockerfile: Dockerfile-Plugins
+    env_file:
+      - ".env"
+    restart: "unless-stopped"
