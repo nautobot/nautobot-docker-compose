@@ -16,19 +16,19 @@ sudo -iu nautobot
 git clone https://github.com/nautobot/nautobot-docker-compose.git
 ```
 
-3. Copy `.env.example` to `.env`
+3. Copy `local.env.example` to `local.env`
 ```
-cp .env.example .env
+cp local.env.example local.env
 ```
 
 4. Make update to the `.env` file for your environment. Updates are IMPORTANT!
 ```
-vi /opt/nautobot/.env
+vi /opt/nautobot/local.env
 ```
 
 5. Update the `.env` to be only available for the Nautobot user
 ```
-chmod 0600 .env
+chmod 0600 local.env
 ```
 
 6. Run `docker-compose up` to start the environment
