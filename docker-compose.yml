@@ -4,7 +4,7 @@ services:
   nautobot:
     image: "networktocode/nautobot:latest"
     env_file:
-      - ".env"
+      - "local.env"
     ports:
       - "8443:8443"
       - "8080:8080"
@@ -12,35 +12,35 @@ services:
   nautobot-worker:
     image: "networktocode/nautobot:latest"
     env_file:
-      - ".env"
+      - "local.env"
     entrypoint: "nautobot-server rqworker"
     depends_on:
-      - nautobot
+      - "nautobot"
     restart: "unless-stopped"
   redis-cacheops:
     image: "redis:alpine"
     env_file:
-      - ".env"
+      - "local.env"
     command:
-      - sh
-      - -c  # this is to evaluate the $REDIS_PASSWORD from the env
-      - redis-server --appendonly yes --requirepass $$NAUTOBOT_REDIS_PASSWORD  ## $$ because of docker-compose
+      - "sh"
+      - "-c"  # this is to evaluate the $REDIS_PASSWORD from the env
+      - "redis-server --appendonly yes --requirepass $$NAUTOBOT_REDIS_PASSWORD"  ## $$ because of docker-compose
     restart: "unless-stopped"
   redis-queue:
     image: "redis:alpine"
     env_file:
-      - ".env"
+      - "local.env"
     command:
-      - sh
-      - -c  # this is to evaluate the $REDIS_PASSWORD from the env
-      - redis-server --appendonly yes --requirepass $$NAUTOBOT_REDIS_PASSWORD  ## $$ because of docker-compose
+      - "sh"
+      - "-c"  # this is to evaluate the $REDIS_PASSWORD from the env
+      - "redis-server --appendonly yes --requirepass $$NAUTOBOT_REDIS_PASSWORD"  ## $$ because of docker-compose
     restart: "unless-stopped"
   postgres:
-    image: postgres:10
+    image: "postgres:10"
     env_file:
-      - ".env"
+      - "local.env"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - "postgres_data:/var/lib/postgresql/data"
     restart: "unless-stopped"
 volumes:
   postgres_data:
