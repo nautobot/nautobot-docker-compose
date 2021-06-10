@@ -38,7 +38,7 @@ docker-compose up
 
 ## Super User Account
 
-### Create Super User Via Environment
+### Create Super User via Environment
 
 The Docker container has a Docker entrypoint script that allows you to create a super user by the usage of Environment variables. This can be done by updating the example `.env` file environment option of `NAUTOBOT_CREATE_SUPERUSER` to `True`. This will then use the information supplied to create the super user.
 
