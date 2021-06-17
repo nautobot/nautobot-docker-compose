@@ -5,7 +5,7 @@ By default the Docker image comes with a self signed certificate that is valid f
   nautobot:
     image: "networktocode/nautobot:latest"
     env_file:
-      - ".env"
+      - "local.env"
     ports:
       - "8443:8443"
       - "8080:8080"
