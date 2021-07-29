@@ -2,7 +2,7 @@
 version: "3.7"
 services:
   nautobot:
-    image: "customername/nautobot-ldap"
+    image: "companyname/nautobot-ldap"
     env_file:
       - ".env"
     ports:
@@ -10,7 +10,7 @@ services:
       - "8080:8080"
     restart: "unless-stopped"
   nautobot-worker:
-    image: "networktocode/nautobot:1.0.3"
+    image: "companyname/nautobot-ldap"
     env_file:
       - ".env"
     entrypoint: "nautobot-server rqworker"
