@@ -1,5 +1,5 @@
 FROM networktocode/nautobot
 USER 0
-RUN apt-get update -y && apt-get install -y gcc libldap2-dev libsasl2-dev libssl-dev
-RUN pip3 install django-auth-ldap
+RUN apt update -y && apt install -y libldap2-dev libsasl2-dev libssl-dev
+RUN pip3 install --upgrade pip wheel && pip3 install django-auth-ldap
 USER nautobot

@@ -10,7 +10,7 @@ services:
       - "8080:8080"
     restart: "unless-stopped"
   nautobot-worker:
-    image: "networktocode/nautobot:latest"
+    image: "networktocode/nautobot:1.0.3"
     env_file:
       - ".env"
     entrypoint: "nautobot-server rqworker"
