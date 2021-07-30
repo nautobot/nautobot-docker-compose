@@ -2,7 +2,7 @@
 version: "3.7"
 services:
   nautobot:
-    image: "networktocode/nautobot:latest"
+    image: "networktocode/nautobot:${NAUTOBOT_IMAGE:-1.1.0}"
     env_file:
       - "local.env"
     ports:
@@ -10,23 +10,33 @@ services:
       - "8080:8080"
     restart: "unless-stopped"
   nautobot-worker:
-    image: "networktocode/nautobot:latest"
+    image: "networktocode/nautobot:${NAUTOBOT_IMAGE:-1.1.0}"
     env_file:
       - "local.env"
     entrypoint: "nautobot-server rqworker"
     depends_on:
       - "nautobot"
     restart: "unless-stopped"
-  redis-cacheops:
-    image: "redis:alpine"
+  # ----------------------------------
+  # Celery worker must only be used in > 1.1.0 installs. If setting to a previous install, remove this worker
+  # ----------------------------------
+  celery_worker:
+    image: "networktocode/nautobot:${NAUTOBOT_IMAGE:-1.1.0}"
+    entrypoint: "nautobot-server celery worker -l $NAUTOBOT_LOG_LEVEL"
+    healthcheck:
+      interval: "5s"
+      timeout: "5s"
+      start_period: "5s"
+      retries: 3
+      test: ["CMD", "nautobot-server", "health_check"]
+    depends_on:
+      - "nautobot"
+      - "redis"
     env_file:
-      - "local.env"
-    command:
-      - "sh"
-      - "-c"  # this is to evaluate the $REDIS_PASSWORD from the env
-      - "redis-server --appendonly yes --requirepass $$NAUTOBOT_REDIS_PASSWORD"  ## $$ because of docker-compose
-    restart: "unless-stopped"
-  redis-queue:
+      - "./local.env"
+    tty: true
+  # ---------------------------------
+  redis:
     image: "redis:alpine"
     env_file:
       - "local.env"

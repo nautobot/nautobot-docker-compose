@@ -2,6 +2,10 @@
 
 This is a set of instructions for an example Docker Compose file to help with getting started. You may use this and also make edits. If you would like to contribute different options for a Docker Compose, you may submit a PR to have included. See the Contributing section.
 
+## NOTE - Celery Worker
+
+This docker-compose includes the Celery worker that was introduced with Nautobot 1.1.0. Please comment out or remove the celery worker in the `docker-compose.yml` if you are using a pre-1.1.0 release.
+
 ## Docker Compose
 
 The provided Docker Compose makes use of environment variables to control what is to be used. This is tightly coupled with the Docker image that is provided on Docker Hub.
