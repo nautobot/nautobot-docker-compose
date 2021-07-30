@@ -3,33 +3,66 @@ version: "3.7"
 services:
   nautobot:
     image: "companyname/nautobot-ldap"
+    build:
+      args:
+        PYTHON_VER: "${PYTHON_VER:-3.7}"
+      context: "./"
+      dockerfile: "Dockerfile-LDAP"
+      target: "final"
     env_file:
-      - ".env"
+      - "local.env"
     ports:
       - "8443:8443"
       - "8080:8080"
     restart: "unless-stopped"
+    depends_on:
+      - "postgres"
+      - "redis"
   nautobot-worker:
+    build:
+      args:
+        PYTHON_VER: "${PYTHON_VER:-3.7}"
+      context: "./"
+      dockerfile: "Dockerfile-LDAP"
+      target: "final"
     image: "companyname/nautobot-ldap"
     env_file:
-      - ".env"
+      - "local.env"
     entrypoint: "nautobot-server rqworker"
     depends_on:
       - "nautobot"
+      - "redis"
     restart: "unless-stopped"
-  redis-cacheops:
+    # healthcheck: "none"
+    healthcheck:
+      interval: "15s"
+      timeout: "10s"
+      start_period: "5s"
+      retries: 3
+      test: ["CMD", "nautobot-server", "health_check"]
+  # ----------------------------------
+  # Celery worker must only be used in > 1.1.0 installs. If setting to a previous install, remove this worker
+  # ----------------------------------
+  celery_worker:
+    image: "networktocode/nautobot:${NAUTOBOT_IMAGE:-1.1.0}"
+    entrypoint: "nautobot-server celery worker"
+    healthcheck:
+      interval: "30s"
+      timeout: "10s"
+      start_period: "30s"
+      retries: 3
+      test: ["CMD", "bash", "-c", "nautobot-server celery inspect ping --destination celery@$$HOSTNAME"]  ## $$ because of docker-compose
+    depends_on:
+      - "nautobot"
+      - "redis"
+    env_file:
+      - "./local.env"
+    tty: true
+  # ---------------------------------
+  redis:
     image: "redis:alpine"
     env_file:
-      - ".env"
-    command:
-      - "sh"
-      - "-c"  # this is to evaluate the $REDIS_PASSWORD from the env
-      - "redis-server --appendonly yes --requirepass $$NAUTOBOT_REDIS_PASSWORD"  ## $$ because of docker-compose
-    restart: "unless-stopped"
-  redis-queue:
-    image: "redis:alpine"
-    env_file:
-      - ".env"
+      - "local.env"
     command:
       - "sh"
       - "-c"  # this is to evaluate the $REDIS_PASSWORD from the env
