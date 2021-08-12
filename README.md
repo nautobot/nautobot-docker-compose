@@ -6,6 +6,10 @@ Network to Code has an existing published Nautobot Docker Image on Docker Hub. S
 
 By default, this project deploys the Nautobot application, a single worker container, Redis containers, and PostgresQL.  It does not deploy NGINX, SSL, or any Nautobot plugins, . However, the project is extensible to allow users to tailor to their specific requirements.  For example, if you need to deploy [SSL](docs/create_ssl_cert.md) or [plugins](docs/plugins.md), see the docs linked. The web server used on the application is [pyuwsgi](https://uwsgi-docs.readthedocs.io/en/latest/).
 
+## NOTE - Celery Worker
+
+This docker-compose includes the Celery worker that was introduced with Nautobot 1.1.0. Please comment out or remove the celery worker in the `docker-compose.yml` if you are using a pre-1.1.0 release.
+
 ## Docker Compose
 
 The provided Docker Compose makes use of environment variables to control what is to be used. This is tightly coupled with the Docker image that is provided on Docker Hub.
