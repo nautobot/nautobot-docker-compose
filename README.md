@@ -1,6 +1,10 @@
 # nautobot-docker-compose
 
-This is a set of instructions for an example Docker Compose file to help with getting started. You may use this and also make edits. If you would like to contribute different options for a Docker Compose, you may submit a PR to have included. See the Contributing section.
+Network to Code has an existing published Nautobot Docker Image on Docker Hub. See [here](https://hub.docker.com/repository/docker/networktocode/nautobot). This project uses Docker Compose. The Docker compose file in this project pulls that Nautobot Docker image using the latest stable Nautobot release along with several other Docker images required for Nautobot to function.  See the diagram below.  This project is for those looking for a multi-container single-node install for Nautobot often coupled with backup & HA capabilities from their hypervisor manager. 
+
+![Container Stack](docs/img/container_stack.png)
+
+By default, this project deploys the Nautobot application, a single worker container, Redis containers, and PostgresQL.  It does not deploy NGINX, SSL, or any Nautobot plugins, . However, the project is extensible to allow users to tailor to their specific requirements.  For example, if you need to deploy [SSL](docs/create_ssl_cert.md) or [plugins](docs/plugins.md), see the docs linked. The web server used on the application is [pyuwsgi](https://uwsgi-docs.readthedocs.io/en/latest/).
 
 ## Docker Compose
 
@@ -21,7 +25,7 @@ git clone https://github.com/nautobot/nautobot-docker-compose.git
 cp local.env.example local.env
 ```
 
-4. Make update to the `.env` file for your environment. Updates are IMPORTANT!
+4. Make update to the `.env` file for your environment. **THESE SHOULD BE CHANGED** for proper security!
 ```
 vi /opt/nautobot/local.env
 ```

@@ -1,4 +1,5 @@
 # SSL Self Signed Certificate
+
 By default the Docker image comes with a self signed certificate that is valid for one year. To provide a different certificate, the file names names `nautobot.key` and `nautobot.crt` within the `/opt/nautobot/` directory is required. With these files present on the host running the Docker compose, use the following as volume mounts into the `nautobot` container.
 
 ```yaml
