@@ -130,3 +130,6 @@ dmypy.json
 .pyre/
 certs/nginx-selfsigned.crt
 certs/nginx-selfsigned.key
+
+# Override URLs
+*override.yml
