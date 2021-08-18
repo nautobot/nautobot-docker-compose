@@ -1,4 +1,6 @@
-FROM networktocode/nautobot:latest
+ARG PYTHON_VER
+ARG NAUTOBOT_VERSION=1.1.2
+FROM networktocode/nautobot:${NAUTOBOT_VERSION}-py${PYTHON_VER}
 
 COPY ./plugin_requirements.txt /opt/nautobot/
 RUN pip install --no-warn-script-location -r /opt/nautobot/plugin_requirements.txt

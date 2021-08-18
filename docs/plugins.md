@@ -29,7 +29,7 @@ chmod 0600 local.env
 
 6. Move the files from the `plugin_example` directory
 ```
-mv plugin_example/* ./
+cp plugin_example/* ./
 ```
 
 7. Update the file `config/nautobot_config.py` settings of `PLUGINS` and `PLUGINS_CONFIG` to match your configuration updates for the plugins (PLUGINS_CONFIG is optional, if not adjusting from the default settings)
@@ -59,6 +59,12 @@ RUN nautobot-server post_upgrade
 ```
 
 ## Docker Compose Override
+
+First move the example override file to the current file (after the copy of the directory is completed)
+
+```no-highlight
+mv docker-compose.override.yml.example docker-compose.override.yml
+```
 
 The `docker-compose.override.yml` overrides settings from the primary docker-compose file. In this case there needs to be a new Docker image file that is used to provide the Nautobot container. The key within the `docker-compose.override.yml` file is:
 
