@@ -21,8 +21,8 @@ services:
   # Celery worker must only be used in > 1.1.0 installs. If setting to a previous install, remove this worker
   # ----------------------------------
   celery_worker:
-    image: "networktocode/nautobot:${NAUTOBOT_IMAGE:-1.1.0}"
-    entrypoint: "nautobot-server celery worker -l $NAUTOBOT_LOG_LEVEL"
+    image: "networktocode/nautobot:${NAUTOBOT_IMAGE:-1.1.2}"
+    entrypoint: "nautobot-server celery worker -l ${NAUTOBOT_LOG_LEVEL:-INFO}"
     healthcheck:
       interval: "5s"
       timeout: "5s"

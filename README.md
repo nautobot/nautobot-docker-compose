@@ -17,29 +17,33 @@ The provided Docker Compose makes use of environment variables to control what i
 ## Getting Started
 
 1. Have [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/) installed on the host
-2. Clone this repository to your Nautobot host into the `/opt/nautobot` directory with the user account Nautobot
+2. Clone this repository to your Nautobot host into the current user directory.
 ```
-sudo useradd --system --shell /bin/bash --create-home --home-dir /opt/nautobot nautobot
-sudo -iu nautobot
 git clone https://github.com/nautobot/nautobot-docker-compose.git
 ```
 
-3. Copy `local.env.example` to `local.env`
+3. Navigate to the new directory from the git clone
+
+```
+cd nautobot-docker-compose
+```
+
+4. Copy `local.env.example` to `local.env`
 ```
 cp local.env.example local.env
 ```
 
-4. Make update to the `.env` file for your environment. **THESE SHOULD BE CHANGED** for proper security!
+5. Make update to the `.env` file for your environment. **THESE SHOULD BE CHANGED** for proper security!
 ```
-vi /opt/nautobot/local.env
+vi local.env
 ```
 
-5. Update the `.env` to be only available for the Nautobot user
+6. Update the `.env` to be only available for the current user
 ```
 chmod 0600 local.env
 ```
 
-6. Run `docker-compose up` to start the environment
+7. Run `docker-compose up` to start the environment
 ```
 docker-compose up
 ```

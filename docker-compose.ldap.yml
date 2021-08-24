@@ -5,7 +5,7 @@ services:
     image: "companyname/nautobot-ldap"
     build:
       args:
-        PYTHON_VER: "${PYTHON_VER:-3.7}"
+        PYTHON_VER: "${PYTHON_VER:-3.9}"
       context: "./"
       dockerfile: "Dockerfile-LDAP"
       target: "final"
@@ -21,7 +21,7 @@ services:
   nautobot-worker:
     build:
       args:
-        PYTHON_VER: "${PYTHON_VER:-3.7}"
+        PYTHON_VER: "${PYTHON_VER:-3.9}"
       context: "./"
       dockerfile: "Dockerfile-LDAP"
       target: "final"
@@ -44,8 +44,14 @@ services:
   # Celery worker must only be used in > 1.1.0 installs. If setting to a previous install, remove this worker
   # ----------------------------------
   celery_worker:
-    image: "networktocode/nautobot:${NAUTOBOT_IMAGE:-1.1.0}"
-    entrypoint: "nautobot-server celery worker"
+    build:
+      args:
+        PYTHON_VER: "${PYTHON_VER:-3.9}"
+      context: "./"
+      dockerfile: "Dockerfile-LDAP"
+      target: "final"
+    image: "companyname/nautobot-ldap"
+    entrypoint: "nautobot-server celery worker -l ${NAUTOBOT_LOG_LEVEL:-INFO}"
     healthcheck:
       interval: "30s"
       timeout: "10s"
@@ -71,7 +77,7 @@ services:
   postgres:
     image: "postgres:10"
     env_file:
-      - ".env"
+      - "local.env"
     volumes:
       - "postgres_data:/var/lib/postgresql/data"
     restart: "unless-stopped"

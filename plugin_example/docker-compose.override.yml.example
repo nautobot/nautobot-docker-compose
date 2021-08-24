@@ -20,3 +20,11 @@ services:
     env_file:
       - "local.env"
     restart: "unless-stopped"
+  celery_worker:
+    image: "yourrepo/nautobot-plugins:latest"
+    build:
+      context: "."
+      dockerfile: "Dockerfile-Plugins"
+    env_file:
+      - "local.env"
+    restart: "unless-stopped"
