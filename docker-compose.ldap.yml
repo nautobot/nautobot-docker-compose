@@ -51,7 +51,7 @@ services:
       dockerfile: "Dockerfile-LDAP"
       target: "final"
     image: "companyname/nautobot-ldap"
-    entrypoint: "nautobot-server celery worker -l ${NAUTOBOT_LOG_LEVEL:-INFO}"
+    entrypoint: "sh -c 'nautobot-server celery worker -l $$NAUTOBOT_LOG_LEVEL'"
     healthcheck:
       interval: "30s"
       timeout: "10s"
