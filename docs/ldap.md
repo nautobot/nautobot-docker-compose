@@ -1,6 +1,6 @@
 # LDAP Container Image
 
-The LDAP container image has a different base and has a multi-stage build associated with it. This is to prevent having to have GCC in the final container image for LDAP.
+The LDAP container image has a different base image than the primary Docker file with Nautobot. The Dockerfile-LDAP has a multi-stage build associated to install the Python components that require GCC. But then the final container being used for running Nautobot does not require GCC.
 
 ## Getting Started Using LDAP Container
 
