@@ -6,6 +6,8 @@ services:
     build:
       context: "."
       dockerfile: "Dockerfile-Plugins"
+      args:
+        PYTHON_VER: "${PYTHON_VER:-3.9}"
     env_file:
       - "local.env"
     ports:
@@ -17,6 +19,18 @@ services:
     build:
       context: "."
       dockerfile: "Dockerfile-Plugins"
+      args:
+        PYTHON_VER: "${PYTHON_VER:-3.9}"
+    env_file:
+      - "local.env"
+    restart: "unless-stopped"
+  celery_worker:
+    image: "yourrepo/nautobot-plugins:latest"
+    build:
+      context: "."
+      dockerfile: "Dockerfile-Plugins"
+      args:
+        PYTHON_VER: "${PYTHON_VER:-3.9}"
     env_file:
       - "local.env"
     restart: "unless-stopped"

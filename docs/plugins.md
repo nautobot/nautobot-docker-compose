@@ -5,10 +5,8 @@ To add plugins you will need to build a custom container with the plugin install
 ## Getting Started Using Plugins
 
 1. Have [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/) installed on the host
-1. Clone this repository to your Nautobot host into the `/opt/nautobot` directory with the user account Nautobot
+2. Clone this repository to your Nautobot host into the current user directory.
 ```
-sudo useradd --system --shell /bin/bash --create-home --home-dir /opt/nautobot nautobot
-sudo -iu nautobot
 git clone https://github.com/nautobot/nautobot-docker-compose.git
 ```
 
@@ -19,7 +17,7 @@ cp local.env.example local.env
 
 4. Make update to the `local.env` file for your environment. Updates are IMPORTANT!
 ```
-vi /opt/nautobot/local.env
+vi local.env
 ```
 
 5. Update the `.env` to be only available for the Nautobot user
@@ -29,33 +27,47 @@ chmod 0600 local.env
 
 6. Move the files from the `plugin_example` directory
 ```
-cp plugin_example/* ./
+cp -r plugin_example/* ./
 ```
 
-7. Update the file `config/nautobot_config.py` settings of `PLUGINS` and `PLUGINS_CONFIG` to match your configuration updates for the plugins (PLUGINS_CONFIG is optional, if not adjusting from the default settings)
+7. Update the file `config/nautobot_config.py` settings of `PLUGINS` and `PLUGINS_CONFIG` to match your configuration updates for the plugins (PLUGINS_CONFIG is optional, if not adjusting from the default settings). See the [example PLUGIN configuration](#nautobot-configuration).
 ```
 vi config/nautobot_config.py
 ```
+
 8. Update the `./plugin_requirements.txt` file with the Python packages that need to be installed. These will be installed via the `pip install -r plugin_requirements.txt` command (This example file has the Nautobot Onboarding Plugin)
 ```
 vi plugin_requirements.txt
 ```
-1. Create the custom Docker Container, see [Custom Docker Container](#custom-docker-container)
-2.  Run `docker-compose build --no-cache` to build the Dockerfile-Plugins (from the file `docker-compose.override.yml`, see below for more details)
-3.  Run `docker-compose up` to have the compose package installed
+
+9. Complete the [Docker Compose Override Update](#docker-compose-override) section.
+
+10. Create the custom Docker Container, see [Custom Docker Container](#custom-docker-container)
+11. Run `docker-compose build --no-cache` to build the Dockerfile-Plugins (from the file `docker-compose.override.yml`, see below for more details)
+
+```
+docker-compose build --no-cache
+```
+
+12.  Run `docker-compose up` to have the compose file executed and bring up the containers.
+
+```
+docker-compose up
+```
 
 ## Custom Docker Container
 
 The first step is to create a custom Docker container that will handle the installation of the packages. The recommendation is to use `Dockerfile-Plugins` as the file name. It can be whatever is meaningful and is not a requirement. The Dockerfile then looks like:
 
 ```docker
-FROM networktocode/nautobot:1.1.0
+ARG PYTHON_VER
+ARG NAUTOBOT_VERSION=1.1.2
+FROM networktocode/nautobot:${NAUTOBOT_VERSION}-py${PYTHON_VER}
 
 COPY ./plugin_requirements.txt /opt/nautobot/
-RUN /opt/nautobot/bin/pip install --no-warn-script-location -r /opt/nautobot/plugin_requirements.txt
+RUN pip install --no-warn-script-location -r /opt/nautobot/plugin_requirements.txt
 
 COPY config/nautobot_config.py /opt/nautobot/nautobot_config.py
-RUN nautobot-server post_upgrade
 ```
 
 ## Docker Compose Override
