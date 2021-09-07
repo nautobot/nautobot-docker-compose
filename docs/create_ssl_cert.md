@@ -57,7 +57,3 @@ Finally, ensure your newly generated certificates are in the correct location.
 user@ntc# ls ./certs/
 nautobot.crt    nautobot.key
 ```
-
-### Let's Encrypt
-
-Place holder for Let's Encrypt
