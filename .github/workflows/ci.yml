@@ -1,0 +1,25 @@
+---
+name: "CI"
+on:
+  - "push"
+  - "pull_request"
+jobs:
+  yamllint:
+    runs-on: "ubuntu-20.04"
+    steps:
+      - name: "Check out repository code"
+        uses: "actions/checkout@v2"
+      - name: "Set up Python"
+        uses: "actions/setup-python@v2"
+        with:
+          python-version: "3.9"
+      - name: "Install Python Packages for Linting"
+        run: "pip install --upgrade pip wheel yamllint"
+      - name: "Install Poetry Packages"
+        run: |
+          pip install poetry
+          poetry config virtualenvs.create false
+          poetry config installer.parallel false
+          poetry install --no-interaction --no-ansi --no-root
+      - name: "Linting: Yamllint"
+        run: "yamllint . --format standard"
