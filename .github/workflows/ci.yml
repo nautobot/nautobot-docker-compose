@@ -11,15 +11,10 @@ jobs:
         uses: "actions/checkout@v2"
       - name: "Set up Python"
         uses: "actions/setup-python@v2"
+        id: "python-setup"
         with:
           python-version: "3.9"
-      - name: "Install Python Packages for Linting"
-        run: "pip install --upgrade pip wheel yamllint"
-      - name: "Install Poetry Packages"
-        run: |
-          pip install poetry
-          poetry config virtualenvs.create false
-          poetry config installer.parallel false
-          poetry install --no-interaction --no-ansi --no-root
-      - name: "Linting: Yamllint"
-        run: "yamllint . --format standard"
+      - name: "Install yamllint"
+        run: "pip install yamllint"
+      - name: "Run yamllint"
+        run: "yamllint ."
