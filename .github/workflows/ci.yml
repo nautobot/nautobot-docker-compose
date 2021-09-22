@@ -18,4 +18,4 @@ jobs:
       - name: "Install yamllint"
         run: "pip install yamllint"
       - name: "Run yamllint"
-        run: "yamlint ."
+        run: "yamllint ."
