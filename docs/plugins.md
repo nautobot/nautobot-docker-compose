@@ -67,7 +67,7 @@ docker-compose up
 The first step is to create a custom Docker container that will handle the installation of the packages. The recommendation is to use `Dockerfile-Plugins` as the file name. It can be whatever is meaningful and is not a requirement. The Dockerfile then looks like:
 
 ```docker
-ARG PYTHON_VER
+ARG PYTHON_VER=3.9
 ARG NAUTOBOT_VERSION=1.1.5
 FROM networktocode/nautobot:${NAUTOBOT_VERSION}-py${PYTHON_VER}
 
