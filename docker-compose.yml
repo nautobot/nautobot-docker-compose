@@ -2,7 +2,7 @@
 version: "3.7"
 services:
   nautobot:
-    image: "networktocode/nautobot:${NAUTOBOT_IMAGE:-1.1.2}-py${PYTHON_VER:-3.9}"
+    image: "networktocode/nautobot:${NAUTOBOT_IMAGE:-1.2.0}-py${PYTHON_VER:-3.9}"
     env_file:
       - "local.env"
     ports:
@@ -10,7 +10,7 @@ services:
       - "8080:8080"
     restart: "unless-stopped"
   nautobot-worker:
-    image: "networktocode/nautobot:${NAUTOBOT_IMAGE:-1.1.2}-py${PYTHON_VER:-3.9}"
+    image: "networktocode/nautobot:${NAUTOBOT_IMAGE:-1.2.0}-py${PYTHON_VER:-3.9}"
     env_file:
       - "local.env"
     entrypoint: "nautobot-server rqworker"
@@ -21,7 +21,7 @@ services:
   # Celery worker must only be used in > 1.1.0 installs. If setting to a previous install, remove this worker
   # ----------------------------------
   celery_worker:
-    image: "networktocode/nautobot:${NAUTOBOT_IMAGE:-1.1.2}-py${PYTHON_VER:-3.9}"
+    image: "networktocode/nautobot:${NAUTOBOT_IMAGE:-1.2.0}-py${PYTHON_VER:-3.9}"
     entrypoint: "sh -c 'nautobot-server celery worker -l $$NAUTOBOT_LOG_LEVEL'"
     healthcheck:
       interval: "5s"
@@ -35,7 +35,24 @@ services:
     env_file:
       - "./local.env"
     tty: true
-  # ---------------------------------
+  # ----------------------------------
+  # Celery beat must only be used in > 1.2.0 installs. If setting to a previous install, remove this worker
+  # ----------------------------------
+  celery_beat:
+    image: "networktocode/nautobot:${NAUTOBOT_IMAGE:-1.2.0}-py${PYTHON_VER:-3.9}"
+    entrypoint: "sh -c 'nautobot-server celery beat -l $$NAUTOBOT_LOG_LEVEL'"
+    healthcheck:
+      interval: "5s"
+      timeout: "5s"
+      start_period: "5s"
+      retries: 3
+      test: ["CMD", "nautobot-server", "health_check"]
+    depends_on:
+      - "nautobot"
+      - "redis"
+    env_file:
+      - "./local.env"
+    tty: true
   redis:
     image: "redis:alpine"
     env_file:
