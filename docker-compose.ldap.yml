@@ -65,6 +65,24 @@ services:
       - "./local.env"
     tty: true
   # ---------------------------------
+  # Celery beat must only be used in > 1.2.0 installs. If setting to a previous install, remove this worker
+  # ----------------------------------
+  celery_beat:
+    image: "companyname/nautobot-ldap"
+    entrypoint: "sh -c 'nautobot-server celery beat -l $$NAUTOBOT_LOG_LEVEL'"
+    healthcheck:
+      interval: "5s"
+      timeout: "5s"
+      start_period: "5s"
+      retries: 3
+      test: ["CMD", "nautobot-server", "health_check"]
+    depends_on:
+      - "nautobot"
+      - "redis"
+    env_file:
+      - "./local.env"
+    tty: true
+  # ----------------------------------
   redis:
     image: "redis:alpine"
     env_file:
