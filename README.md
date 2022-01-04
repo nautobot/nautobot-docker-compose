@@ -13,7 +13,7 @@ There are two variables that should be set for the Docker-Compose file. The foll
 | Environment Variable | Default | Notes |
 | -------------------- | ------- | ----- |
 | PYTHON_VER | 3.9 | This sets the Python version within the container version. 3.6 - 3.9 are initially supported |
-| NAUTOBOT_IMAGE | 1.2.0 | The version of Nautobot to use in the container image |
+| NAUTOBOT_IMAGE | 1.2.2 | The version of Nautobot to use in the container image |
 ## NOTE - Celery Worker
 
 This docker-compose includes the Celery worker that was introduced with Nautobot 1.1.0. Please comment out or remove the celery worker in the `docker-compose.yml` if you are using a pre-1.1.0 release.
@@ -21,6 +21,10 @@ This docker-compose includes the Celery worker that was introduced with Nautobot
 ## Docker Compose
 
 The provided Docker Compose makes use of environment variables to control what is to be used. This is tightly coupled with the Docker image that is provided on Docker Hub.
+
+## Getting Started - Plugins
+
+The installation of plugins has a slightly more involved getting started process. See see the [Plugin documentation.](docs/plugins.md).
 
 ## Getting Started
 
@@ -102,6 +106,3 @@ Password (again):
 Superuser created successfully.
 ```
 
-## Plugins
-
-For plugin documentation, see the [docs](docs/plugins.md).
