@@ -61,7 +61,7 @@ The first step is to create a custom Docker container that will handle the insta
 
 ```docker
 ARG PYTHON_VER
-ARG NAUTOBOT_VERSION=1.2.2
+ARG NAUTOBOT_VERSION=1.2.4
 FROM networktocode/nautobot:${NAUTOBOT_VERSION}-py${PYTHON_VER}
 
 COPY ./plugin_requirements.txt /opt/nautobot/
