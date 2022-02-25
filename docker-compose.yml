@@ -62,12 +62,14 @@ services:
       - "-c"  # this is to evaluate the $REDIS_PASSWORD from the env
       - "redis-server --appendonly yes --requirepass $$NAUTOBOT_REDIS_PASSWORD"  ## $$ because of docker-compose
     restart: "unless-stopped"
-  postgres:
+  db:
     image: "postgres:14"
     env_file:
       - "local.env"
+    environment:
+      NAUTOBOT_DB_ENGINE: "django.db.backends.postgres"
     volumes:
-      - "postgres_data:/var/lib/postgresql/data"
+      - "db_data:/var/lib/postgresql/data"
     restart: "unless-stopped"
 volumes:
-  postgres_data:
+  db_data:

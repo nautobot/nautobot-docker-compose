@@ -18,6 +18,13 @@ There are two variables that should be set for the Docker-Compose file. The foll
 
 This docker-compose includes the Celery worker that was introduced with Nautobot 1.1.0. Please comment out or remove the celery worker in the `docker-compose.yml` if you are using a pre-1.1.0 release.
 
+## NOTE - MySQL
+
+If you want to use MySQL for the database instead of postgres, In step 7 below instead use
+```
+docker-compose -f docker-compose.yml -f docker-compose.mysql.yml up
+```
+
 ## Docker Compose
 
 The provided Docker Compose makes use of environment variables to control what is to be used. This is tightly coupled with the Docker image that is provided on Docker Hub.

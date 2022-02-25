@@ -1,0 +1,13 @@
+---
+version: "3.7"
+services:
+  db:
+    image: "mariadb"
+    env_file:
+      - "local.env"
+    environment:
+      NAUTOBOT_DB_ENGINE: "django.db.backends.mysql"
+    volumes:
+      - "db_data:/var/lib/mysql"
+    restart: "unless-stopped"
+
