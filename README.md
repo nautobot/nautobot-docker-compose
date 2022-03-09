@@ -13,7 +13,7 @@ There are two variables that should be set for the Docker-Compose file. The foll
 | Environment Variable | Default | Notes |
 | -------------------- | ------- | ----- |
 | PYTHON_VER | 3.9 | This sets the Python version within the container version. 3.6 - 3.9 are initially supported |
-| NAUTOBOT_IMAGE | 1.2.4 | The version of Nautobot to use in the container image |
+| NAUTOBOT_IMAGE | 1.2.8 | The version of Nautobot to use in the container image |
 ## NOTE - Celery Worker
 
 This docker-compose includes the Celery worker that was introduced with Nautobot 1.1.0. Please comment out or remove the celery worker in the `docker-compose.yml` if you are using a pre-1.1.0 release.
@@ -45,7 +45,7 @@ cd nautobot-docker-compose
 cp local.env.example local.env
 ```
 
-5. Make update to the `.env` file for your environment. **THESE SHOULD BE CHANGED** for proper security!
+5. Update the `.env` file for your environment. **THESE SHOULD BE CHANGED** for proper security!
 ```
 vi local.env
 ```
