@@ -113,3 +113,8 @@ Password (again):
 Superuser created successfully.
 ```
 
+
+
+### Infrastructure model
+
+![Infrastructure model](.infragenie/infrastructure_model.png)
