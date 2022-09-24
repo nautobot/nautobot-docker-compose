@@ -70,12 +70,6 @@ services:
   celery_beat:
     image: "companyname/nautobot-ldap"
     entrypoint: "sh -c 'nautobot-server celery beat -l $$NAUTOBOT_LOG_LEVEL'"
-    healthcheck:
-      interval: "5s"
-      timeout: "5s"
-      start_period: "5s"
-      retries: 3
-      test: ["CMD", "nautobot-server", "health_check"]
     depends_on:
       - "nautobot"
       - "redis"
