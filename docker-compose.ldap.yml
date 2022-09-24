@@ -75,6 +75,7 @@ services:
       - "redis"
     env_file:
       - "./local.env"
+    restart: "unless-stopped"
     tty: true
   # ----------------------------------
   redis:
