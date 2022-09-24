@@ -58,11 +58,14 @@ services:
       - "redis-server --appendonly yes --requirepass $$NAUTOBOT_REDIS_PASSWORD"  ## $$ because of docker-compose
     restart: "unless-stopped"
   postgres:
+    # Using postgres 13 due to scram issues with ARM processors
     image: "postgres:13"
     env_file:
       - "local.env"
+    environment:
+      NAUTOBOT_DB_ENGINE: "django.db.backends.postgres"
     volumes:
-      - "postgres_data:/var/lib/postgresql/data"
+      - "db_data:/var/lib/postgresql/data"
     restart: "unless-stopped"
 volumes:
-  postgres_data:
+  db_data:
