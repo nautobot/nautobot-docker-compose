@@ -22,7 +22,7 @@ This docker-compose includes the Celery worker that was introduced with Nautobot
 
 If you want to use MySQL for the database instead of postgres, In step 7 below instead use
 ```
-docker-compose -f docker-compose.yml -f docker-compose.mysql.yml up
+docker compose -f docker-compose.yml -f docker-compose.mysql.yml up
 ```
 
 ## Docker Compose
@@ -62,9 +62,9 @@ vi local.env
 chmod 0600 local.env
 ```
 
-7. Run `docker-compose up` to start the environment
+7. Run `docker compose up` to start the environment
 ```
-docker-compose up
+docker compose up
 ```
 
 ## Super User Account
