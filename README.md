@@ -22,7 +22,7 @@ This docker-compose includes the Celery worker that was introduced with Nautobot
 This documentation is now written assuming the latest Docker Compose methodology of using the Docker Compose Plugin instead of the independent docker-compose executable. See the [Docker Compose Plugin installation notes](https://docs.docker.com/compose/install/)
 If you want to use MySQL for the database instead of postgres, In step 7 below instead use
 ```
-docker compose -f docker-compose.yml -f docker-compose.mysql.yml up
+docker-compose -f docker-compose.yml -f docker-compose.mysql.yml up
 ```
 
 ## Docker Compose
