@@ -62,9 +62,9 @@ vi local.env
 chmod 0600 local.env
 ```
 
-7. Run `docker compose up` to start the environment
+7. Run `docker-compose up` to start the environment
 ```
-docker compose up
+docker-compose up
 ```
 
 ## Super User Account
