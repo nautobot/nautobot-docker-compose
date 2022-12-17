@@ -6,36 +6,43 @@ To add plugins you will need to build a custom container with the plugin install
 
 1. Have [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/) installed on the host
 2. Clone this repository to your Nautobot host into the current user directory.
+
 ```
 git clone https://github.com/nautobot/nautobot-docker-compose.git
 ```
 
 3. Copy `local.env.example` to `local.env`
+
 ```
 cp local.env.example local.env
 ```
 
 4. Make update to the `local.env` file for your environment. Updates are IMPORTANT!
+
 ```
 vi local.env
 ```
 
 5. Update the `.env` to be only available for the Nautobot user
+
 ```
 chmod 0600 local.env
 ```
 
 6. Move the files from the `plugin_example` directory
+
 ```
 cp -r plugin_example/* ./
 ```
 
 7. Update the file `config/nautobot_config.py` settings of `PLUGINS` and `PLUGINS_CONFIG` to match your configuration updates for the plugins (PLUGINS_CONFIG is optional, if not adjusting from the default settings). See the [example PLUGIN configuration](#nautobot-configuration).
+
 ```
 vi config/nautobot_config.py
 ```
 
 8. Update the `./plugin_requirements.txt` file with the Python packages that need to be installed. These will be installed via the `pip install -r plugin_requirements.txt` command (This example file has the Nautobot Onboarding Plugin)
+
 ```
 vi plugin_requirements.txt
 ```
@@ -49,7 +56,7 @@ vi plugin_requirements.txt
 docker-compose build --no-cache
 ```
 
-12.  Run `docker-compose up` to have the compose file executed and bring up the containers.
+12. Run `docker-compose up` to have the compose file executed and bring up the containers.
 
 ```
 docker-compose up
@@ -61,7 +68,7 @@ The first step is to create a custom Docker container that will handle the insta
 
 ```docker
 ARG PYTHON_VER
-ARG NAUTOBOT_VERSION=1.2.8
+ARG NAUTOBOT_VERSION=1.5.4
 FROM networktocode/nautobot:${NAUTOBOT_VERSION}-py${PYTHON_VER}
 
 COPY ./plugin_requirements.txt /opt/nautobot/
@@ -81,10 +88,10 @@ mv docker-compose.override.yml.example docker-compose.override.yml
 The `docker-compose.override.yml` overrides settings from the primary docker-compose file. In this case there needs to be a new Docker image file that is used to provide the Nautobot container. The key within the `docker-compose.override.yml` file is:
 
 ```yaml
-    image: "companyname/nautobot-plugins:latest"
-    build:
-      context: .
-      dockerfile: Dockerfile-Plugins
+image: "companyname/nautobot-plugins:latest"
+build:
+  context: .
+  dockerfile: Dockerfile-Plugins
 ```
 
 This indicates to build the image name `companyname/nautobot-plugins:latest` from the Dockerfile `Dockerfile-Plugins`. Then that image is what is used for the Nautobot container image. Substitute `companyname` with something that is meaningful to your organization.

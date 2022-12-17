@@ -1,5 +1,5 @@
 ARG PYTHON_VER
-ARG NAUTOBOT_VERSION=1.2.8
+ARG NAUTOBOT_VERSION=1.5.4
 FROM networktocode/nautobot:${NAUTOBOT_VERSION}-py${PYTHON_VER}
 
 RUN pip install --upgrade pip wheel

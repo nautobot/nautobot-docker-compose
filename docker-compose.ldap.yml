@@ -75,7 +75,7 @@ services:
       - "redis-server --appendonly yes --requirepass $$NAUTOBOT_REDIS_PASSWORD"  ## $$ because of docker-compose
     restart: "unless-stopped"
   postgres:
-    image: "postgres:14"
+    image: "postgres:13"
     env_file:
       - "local.env"
     volumes:
