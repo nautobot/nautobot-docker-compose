@@ -4,7 +4,7 @@ Network to Code has an existing published Nautobot Docker Image on Docker Hub. S
 
 ![Container Stack](docs/img/container_stack.png)
 
-By default, this project deploys the Nautobot application, a single worker container, Redis containers, and PostgresQL.  It does not deploy NGINX, SSL, or any Nautobot plugins, . However, the project is extensible to allow users to tailor to their specific requirements.  For example, if you need to deploy [SSL](docs/create_ssl_cert.md) or [plugins](docs/plugins.md), see the docs linked. The web server used on the application is [pyuwsgi](https://uwsgi-docs.readthedocs.io/en/latest/).
+By default, this project deploys the Nautobot application, a single worker container, Redis containers, and PostgresQL.  It does not deploy NGINX, SSL, or any Nautobot plugins. However, the project is extensible to allow users to tailor to their specific requirements.  For example, if you need to deploy [SSL](docs/create_ssl_cert.md) or [plugins](docs/plugins.md), see the docs linked. The web server used on the application is [pyuwsgi](https://uwsgi-docs.readthedocs.io/en/latest/).
 
 ## Environment Variable Controls
 
