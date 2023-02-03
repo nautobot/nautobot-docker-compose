@@ -18,28 +18,6 @@ services:
     depends_on:
       - "postgres"
       - "redis"
-  nautobot-worker:
-    build:
-      args:
-        PYTHON_VER: "${PYTHON_VER:-3.9}"
-      context: "./"
-      dockerfile: "Dockerfile-LDAP"
-      target: "final"
-    image: "companyname/nautobot-ldap"
-    env_file:
-      - "local.env"
-    entrypoint: "nautobot-server rqworker"
-    depends_on:
-      - "nautobot"
-      - "redis"
-    restart: "unless-stopped"
-    # healthcheck: "none"
-    healthcheck:
-      interval: "15s"
-      timeout: "10s"
-      start_period: "5s"
-      retries: 3
-      test: ["CMD", "nautobot-server", "health_check"]
   # ----------------------------------
   # Celery worker must only be used in > 1.1.0 installs. If setting to a previous install, remove this worker
   # ----------------------------------
@@ -75,7 +53,7 @@ services:
       - "redis-server --appendonly yes --requirepass $$NAUTOBOT_REDIS_PASSWORD"  ## $$ because of docker-compose
     restart: "unless-stopped"
   postgres:
-    image: "postgres:14"
+    image: "postgres:13"
     env_file:
       - "local.env"
     volumes:
