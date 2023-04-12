@@ -10,6 +10,6 @@ services:
     volumes:
       - "db_data:/var/lib/mysql"
     restart: "unless-stopped"
-
 volumes:
   db_data:
+

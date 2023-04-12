@@ -4,7 +4,8 @@ Network to Code has an existing published Nautobot Docker Image on Docker Hub. S
 
 ![Container Stack](docs/img/container_stack.png)
 
-By default, this project deploys the Nautobot application, a single worker container, Redis containers, and PostgresQL. It does not deploy NGINX, SSL, or any Nautobot plugins, . However, the project is extensible to allow users to tailor to their specific requirements. For example, if you need to deploy [SSL](docs/create_ssl_cert.md) or [plugins](docs/plugins.md), see the docs linked. The web server used on the application is [pyuwsgi](https://uwsgi-docs.readthedocs.io/en/latest/).
+By default, this project deploys the Nautobot application, a single worker container, Redis containers, and PostgresQL. It does not deploy NGINX, SSL, or any Nautobot plugins. However, the project is extensible to allow users to tailor to their specific requirements. For example, if you need to deploy [SSL](docs/create_ssl_cert.md) or [plugins](docs/plugins.md), see the docs linked. The web server used on the application is [pyuwsgi](https://uwsgi-docs.readthedocs.io/en/latest/).
+
 
 ## Environment Variable Controls
 
@@ -13,7 +14,7 @@ There are two variables that should be set for the Docker-Compose file. The foll
 | Environment Variable | Default | Notes                                                                                        |
 | -------------------- | ------- | -------------------------------------------------------------------------------------------- |
 | PYTHON_VER           | 3.9     | This sets the Python version within the container version. 3.6 - 3.9 are initially supported |
-| NAUTOBOT_IMAGE       | 1.5.4   | The version of Nautobot to use in the container image                                        |
+| NAUTOBOT_IMAGE       | 1.5.9   | The version of Nautobot to use in the container image                                        |
 
 ## NOTE - Celery Worker
 
