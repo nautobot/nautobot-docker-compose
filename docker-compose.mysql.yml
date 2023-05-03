@@ -2,7 +2,7 @@
 version: "3.7"
 services:
   db:
-    image: "mariadb"
+    image: "mysql"
     env_file:
       - "local.env"
     environment:
@@ -10,3 +10,5 @@ services:
     volumes:
       - "db_data:/var/lib/mysql"
     restart: "unless-stopped"
+volumes:
+  db_data:
