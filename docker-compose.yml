@@ -9,6 +9,7 @@ services:
       - "8443:8443"
       - "8080:8080"
     restart: "unless-stopped"
+
   # ----------------------------------
   # Celery worker must only be used in > 1.1.0 installs. If setting to a previous install, remove this worker
   # ----------------------------------
@@ -33,17 +34,12 @@ services:
   celery_beat:
     image: "networktocode/nautobot:${NAUTOBOT_IMAGE:-1.5.11}-py${PYTHON_VER:-3.9}"
     entrypoint: "sh -c 'nautobot-server celery beat -l $$NAUTOBOT_LOG_LEVEL'"
-    healthcheck:
-      interval: "5s"
-      timeout: "5s"
-      start_period: "5s"
-      retries: 3
-      test: ["CMD", "nautobot-server", "health_check"]
     depends_on:
       - "nautobot"
       - "redis"
     env_file:
       - "./local.env"
+    restart: "unless-stopped"
     tty: true
   redis:
     image: "redis:alpine"

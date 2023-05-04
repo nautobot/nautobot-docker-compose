@@ -34,3 +34,17 @@ services:
     env_file:
       - "local.env"
     restart: "unless-stopped"
+  # ----------------------------------
+  # Celery beat must only be used in > 1.2.0 installs. If setting to a previous install, remove this worker
+  # ----------------------------------
+
+  celery_beat:
+    image: "yourrepo/nautobot-plugins:latest"
+    build:
+      context: "."
+      dockerfile: "Dockerfile-Plugins"
+      args:
+        PYTHON_VER: "${PYTHON_VER:-3.9}"
+    env_file:
+      - "local.env"
+    restart: "unless-stopped"
