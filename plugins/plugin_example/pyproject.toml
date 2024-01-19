@@ -1,0 +1,48 @@
+[tool.poetry]
+name = "nautobot_example_plugin"
+version = "0.1.0"
+description = ""
+authors = ["Network to Code <info@networktocode.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8,<3.12"
+nautobot = "^2.0.0"
+nautobot-device-onboarding = "^3.0.0"
+
+[tool.poetry.dev-dependencies]
+bandit = "*"
+black = "*"
+invoke = "*"
+pydocstyle = "*"
+pylint = "*"
+pylint-django = "*"
+pytest = "*"
+requests_mock = "*"
+yamllint = "*"
+
+[tool.black]
+line-length = 120
+target-version = ['py36']
+include = '\.pyi?$'
+exclude = '''
+(
+  /(
+      \.eggs         # exclude a few common directories in the
+    | \.git          # root of the project
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | _build
+    | buck-out
+    | build
+    | dist
+  )/
+  | settings.py     # This is where you define files that should not be stylized by black
+                     # the root of the project
+)
+'''
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
