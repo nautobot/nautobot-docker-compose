@@ -2,7 +2,7 @@
 nautobot_docker_compose:
   project_name: "nautobot-docker-compose"
   python_ver: "3.9"
-  local: False
+  local: false
   compose_dir: "environments/"
   compose_files:
     - "docker-compose.postgres.yml"
