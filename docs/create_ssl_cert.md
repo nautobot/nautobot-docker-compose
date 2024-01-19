@@ -12,8 +12,8 @@ By default the Docker image comes with a self signed certificate that is valid f
       - "8080:8080"
     restart: "unless-stopped"
     volumes:
-      - path/to/your/nautobot.key /opt/nautobot/nautobot.key
-      - path/to/your/nautobot.crt /opt/nautobot/nautobot.crt
+      - "./nautobot.key:/opt/nautobot/nautobot.key:ro"
+      - "./nautobot.crt:/opt/nautobot/nautobot.crt:ro"
 ```
 
 ## Make Own Cert Options (Not Required)
@@ -38,7 +38,7 @@ If you do not have OpenSSL installed, please follow the [installation guidelines
 
 Once OpenSSL is installed, run the following command to generate the certificates.
 ```
-sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ./certs/nautobot.key -out ./certs/nautobot.crt
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ./environments/nautobot.key -out ./environments/nautobot.crt
 ```
 
 You will be prompted with information to fill out for your certificate.
@@ -54,6 +54,6 @@ Email Address []:admin@your_domain.com
 
 Finally, ensure your newly generated certificates are in the correct location.
 ```
-user@ntc# ls ./certs/
+user@ntc# ls ./environments/
 nautobot.crt    nautobot.key
 ```
