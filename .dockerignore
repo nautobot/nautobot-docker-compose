@@ -1,0 +1,26 @@
+# Docker related
+environments/Dockerfile
+environments/docker-compose*.yml
+environments/*.env
+*.env
+
+# Python
+**/*.pyc
+**/*.pyo
+**/__pycache__/
+**/.pytest_cache/
+**/.venv/
+
+
+# Other
+docs/_build
+FAQ.md
+.git/
+.gitignore
+.github
+tasks.py
+LICENSE
+**/*.log
+**/.vscode/
+invoke*.yml
+tasks.py
