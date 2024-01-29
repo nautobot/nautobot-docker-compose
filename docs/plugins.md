@@ -1,100 +1,41 @@
 # PLUGINS
 
-To add plugins you will need to build a custom container with the plugin installed.
+To add plugins you will need to build a custom container with the plugin(s) installed.  There are multiple ways to add a plugin to your environment but this document will show the standard method pulling from PyPI.
 
 ## Getting Started Using Plugins
 
-1. Have [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/) installed on the host
-2. Clone this repository to your Nautobot host into the current user directory.
+1. Follow the steps in the README to create your Poetry environment and ensure you can build a container.
+2. To add a specific plugin to your environment with Poetry, you simply need to use the `poetry add` command. For example, to add the Golden Configuration plugin you would do the following:
 
-```
-git clone https://github.com/nautobot/nautobot-docker-compose.git
-```
-
-3. Copy `local.env.example` to `local.env`
-
-```
-cp local.env.example local.env
+```text
+poetry add nautobot-device-onboarding
 ```
 
-4. Make update to the `local.env` file for your environment. Updates are IMPORTANT!
+3. This command should automatically trigger Poetry to see the versions you've specified for Nautobot and your other dependencies in the `pyproject.toml` file and find the most compatible version that is within the limits of the versions defined in your `pyproject.toml`.  If you wish to use a specific version you can append that to the command like so:
 
-```
-vi local.env
-```
-
-5. Update the `.env` to be only available for the Nautobot user
-
-```
-chmod 0600 local.env
+```text
+poetry add nautobot-device-onboarding==3.0.1
 ```
 
-6. Move the files from the `plugin_example` directory
+If for some reason this version doesn't conform to the limits set in your `pyproject.toml` you will need to modify the versions specified by your other dependencies. Poetry should provide some feedback at the command prompt once you've issued the add command if there are limits that restrict you from using that version. Poetry should also update your `poetry.lock` file with the specific pinned version of that plugin.
 
-```
-cp -r plugin_example/* ./
-```
+4. Once your `poetry.lock` file is updated by Poetry you will need to update the file `config/nautobot_config.py` settings of `PLUGINS` and `PLUGINS_CONFIG` to match your configuration updates for the plugins (PLUGINS_CONFIG is optional, if not adjusting from the default settings). See the [example PLUGIN configuration](#nautobot-configuration).
 
-7. Update the file `config/nautobot_config.py` settings of `PLUGINS` and `PLUGINS_CONFIG` to match your configuration updates for the plugins (PLUGINS_CONFIG is optional, if not adjusting from the default settings). See the [example PLUGIN configuration](#nautobot-configuration).
-
-```
+```text
 vi config/nautobot_config.py
 ```
 
-8. Update the `./plugin_requirements.txt` file with the Python packages that need to be installed. These will be installed via the `pip install -r plugin_requirements.txt` command (This example file has the Nautobot Onboarding Plugin)
+5. Finally, you should simply need to rebuild your containers with an `invoke build --no-cache` to build the new custom container.
 
-```
-vi plugin_requirements.txt
-```
-
-9. Complete the [Docker Compose Override Update](#docker-compose-override) section.
-
-10. Create the custom Docker Container, see [Custom Docker Container](#custom-docker-container)
-11. Run `docker-compose build --no-cache` to build the Dockerfile-Plugins (from the file `docker-compose.override.yml`, see below for more details)
-
-```
-docker-compose build --no-cache
+```text
+invoke build --no-cache
 ```
 
-12. Run `docker-compose up` to have the compose file executed and bring up the containers.
+6. Once your new containers are built you should simply need to start them if not already started, or restart them with the following:
 
+```text
+invoke stop start
 ```
-docker-compose up
-```
-
-## Custom Docker Container
-
-The first step is to create a custom Docker container that will handle the installation of the packages. The recommendation is to use `Dockerfile-Plugins` as the file name. It can be whatever is meaningful and is not a requirement. The Dockerfile then looks like:
-
-```docker
-ARG PYTHON_VER
-ARG NAUTOBOT_VERSION=1.5.9
-FROM networktocode/nautobot:${NAUTOBOT_VERSION}-py${PYTHON_VER}
-
-COPY ./plugin_requirements.txt /opt/nautobot/
-RUN pip install --no-warn-script-location -r /opt/nautobot/plugin_requirements.txt
-
-COPY config/nautobot_config.py /opt/nautobot/nautobot_config.py
-```
-
-## Docker Compose Override
-
-First move the example override file to the current file (after the copy of the directory is completed)
-
-```no-highlight
-mv docker-compose.override.yml.example docker-compose.override.yml
-```
-
-The `docker-compose.override.yml` overrides settings from the primary docker-compose file. In this case there needs to be a new Docker image file that is used to provide the Nautobot container. The key within the `docker-compose.override.yml` file is:
-
-```yaml
-image: "companyname/nautobot-plugins:latest"
-build:
-  context: .
-  dockerfile: Dockerfile-Plugins
-```
-
-This indicates to build the image name `companyname/nautobot-plugins:latest` from the Dockerfile `Dockerfile-Plugins`. Then that image is what is used for the Nautobot container image. Substitute `companyname` with something that is meaningful to your organization.
 
 ## Nautobot Configuration
 
