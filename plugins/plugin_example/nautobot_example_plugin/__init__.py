@@ -2,8 +2,6 @@
 __version__ = "0.1.0"
 
 from nautobot.extras.plugins import PluginConfig
-from health_check.plugins import plugin_dir
-from .healthcheck import ExampleCheckBackend
 
 
 class ExampleConfig(PluginConfig):
@@ -18,11 +16,6 @@ class ExampleConfig(PluginConfig):
     required_settings = []
     default_settings = {}
     caching_config = {}
-
-    def ready(self):
-        """Adds the example Heath Check Backend to the health check registry."""
-        super().ready()
-        plugin_dir.register(ExampleCheckBackend)
 
 
 config = ExampleConfig  # pylint: disable=invalid-name
