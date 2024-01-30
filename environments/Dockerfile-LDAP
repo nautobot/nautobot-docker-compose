@@ -65,7 +65,7 @@ COPY --from=builder /usr/local/bin /usr/local/bin
 COPY --from=builder /opt/nautobot /opt/nautobot
 # COPY ./packages /source/packages
 
-RUN grep -v /tmp/dist/requirements.txt > /tmp/dist/new_requirements.txt && \
+RUN grep -v /source/plugins /tmp/dist/requirements.txt > /tmp/dist/new_requirements.txt && \
     pip install -r /tmp/dist/new_requirements.txt && \
     pip install /tmp/dist/*.whl && \
     rm -rf /source /tmp/dist && \
