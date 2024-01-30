@@ -6,7 +6,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - "../nautobot_config.py:/opt/nautobot/nautobot_config.py"
+      - "../config/nautobot_config.py:/opt/nautobot/nautobot_config.py"
       - "../jobs:/opt/nautobot/jobs"
     healthcheck:
       test: ["CMD", "true"]  # Due to layering, disable: true won't work. Instead, change the test
@@ -16,7 +16,7 @@ services:
       - "-c"  # this is to evaluate the $NAUTOBOT_LOG_LEVEL from the env
       - "nautobot-server celery worker -l $$NAUTOBOT_LOG_LEVEL --events"  ## $$ because of docker-compose
     volumes:
-      - "../nautobot_config.py:/opt/nautobot/nautobot_config.py"
+      - "../config/nautobot_config.py:/opt/nautobot/nautobot_config.py"
       - "../jobs:/opt/nautobot/jobs"
     healthcheck:
       test: ["CMD", "true"]  # Due to layering, disable: true won't work. Instead, change the test
