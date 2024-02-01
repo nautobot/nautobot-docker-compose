@@ -27,7 +27,8 @@ If you do not have your own self signed certificate, you may generate them by us
 OpenSSL is included with many UNIX operating systems, but may need to be installed on your system first.
 
 Check to see if OpenSSL is installed on your system
-```
+
+```bash
 user@ntc# openssl version
 LibreSSL 2.8.3
 ```
@@ -37,12 +38,14 @@ If you do not have OpenSSL installed, please follow the [installation guidelines
 #### Example Self Sign Cert
 
 Once OpenSSL is installed, run the following command to generate the certificates.
-```
+
+```bash
 sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ./environments/nautobot.key -out ./environments/nautobot.crt
 ```
 
 You will be prompted with information to fill out for your certificate.
-```
+
+```bash
 Country Name (2 letter code) [AU]:US
 State or Province Name (full name) [Some-State]:New York
 Locality Name (eg, city) []:New York City
@@ -53,7 +56,8 @@ Email Address []:admin@your_domain.com
 ```
 
 Finally, ensure your newly generated certificates are in the correct location.
-```
+
+```bash
 user@ntc# ls ./environments/
 nautobot.crt    nautobot.key
 ```

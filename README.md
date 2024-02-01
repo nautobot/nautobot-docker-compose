@@ -77,7 +77,7 @@ Each command can be executed with a simple `invoke <command>`. Each command also
 
 ## Manage Nautobot environment
 
-```text
+```bash
   build            Build all docker images.
   debug            Start Nautobot and its dependencies in debug mode.
   destroy          Destroy all containers and volumes.
@@ -89,7 +89,7 @@ Each command can be executed with a simple `invoke <command>`. Each command also
 
 ## Utility
 
-```text
+```bash
   cli              Launch a bash shell inside the running Nautobot container.
   migrate          Run database migrations in Django.
   nbshell          Launch a nbshell session.
@@ -99,7 +99,7 @@ Each command can be executed with a simple `invoke <command>`. Each command also
 
 If you want to use MySQL for the database instead of PostgreSQL, perform the below step in place for step #7 below:
 
-```text
+```bash
 cp invoke.mysql.yml invoke.yml
 invoke build start
 ```
@@ -111,45 +111,45 @@ invoke build start
 1. Have [Docker](https://docs.docker.com/get-docker/) installed on the host.
 2. Clone this repository to your Nautobot host into the current user directory.
 
-```text
+```bash
 git clone https://github.com/nautobot/nautobot-docker-compose.git
 ```
 
 3. Navigate to the new directory from the git clone.
 
-```text
+```bash
 cd nautobot-docker-compose
 ```
 
 4. Copy the `local.env.example` file to `local.env` and `creds.example.env` file to `creds.env` in the environments folder.
 
-```text
+```bash
 cp environments/local.example.env environments/local.env
 cp environments/creds.example.example environments/creds.env
 ```
 
 5. Update the `.env` files for your environment. **THESE SHOULD BE CHANGED** for proper security and the `creds.env` file should never be synchronized to git as it should contain all secrets for the environment!
 
-```text
+```bash
 vi environments/local.env
 vi environments/creds.env
 ```
 
 6. Update the `local.env` and `creds.env` files to be only available for the current user.
 
-```text
+```bash
 chmod 0600 environments/local.env environments/creds.env
 ```
 
 7. Copy the `invoke.example.yml` file to `invoke.yml`:
 
-```text
+```bash
 cp invoke.example.yml invoke.yml
 ```
 
 7. Run `invoke build start` to build the containers and start the environment.
 
-```text
+```bash
 invoke build start
 ```
 
@@ -173,13 +173,13 @@ After the containers have started:
 
 1. Verify the containers are running:
 
-```text
+```bash
 docker container ls
 ```
 
 Example Output:
 
-```text
+```bash
 ❯ docker container ls
 CONTAINER ID   IMAGE                           COMMAND                  CREATED         STATUS                   PORTS                                                                                  NAMES
 143f10daa229   networktocode/nautobot:latest   "nautobot-server rqw…"   2 minutes ago   Up 2 minutes (healthy)                                                                                          nautobot-docker-compose_celery_worker_1
@@ -190,13 +190,13 @@ ad57ac1749b3   redis:alpine                    "docker-entrypoint.s…"   2 minu
 
 2. Execute Create Super User Command and follow the prompts
 
-```text
+```bash
 invoke createsuperuser
 ```
 
 Example Prompts:
 
-```text
+```bash
 nautobot@bb29124d7acb:~$ invoke createsuperuser
 Username: administrator
 Email address:
