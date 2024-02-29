@@ -125,7 +125,7 @@ cd nautobot-docker-compose
 
 ```bash
 cp environments/local.example.env environments/local.env
-cp environments/creds.example.example environments/creds.env
+cp environments/creds.example.env environments/creds.env
 ```
 
 5. Update the `.env` files for your environment. **THESE SHOULD BE CHANGED** for proper security and the `creds.env` file should never be synchronized to git as it should contain all secrets for the environment!
