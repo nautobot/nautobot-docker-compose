@@ -12,11 +12,11 @@ This documentation is now written assuming the latest Docker Compose methodology
 
 ## Why Poetry?
 
-Poetry was chosen to replace both **requirements.txt** and **setup.py**. Poetry uses the `pyproject.toml` file to define package details, main package dependencies, development dependencies, and tool-related configurations. Poetry resolves dependencies and stores the hashes and metadata within the `poetry.lock` file that is then similar to performing a `pip freeze > requirements.txt`, but is more secure due to tracking package hashes. The `poetry.lock` is what is used to provide consistency for package versions across the project to make sure anyone who is developing on it is using the same Python dependency versions. Poetry also provides virtual environments by simply being in the same directory as the `pyproject.toml` and `poetry.lock` files and execute the `poetry shell` command.
+Poetry was chosen to replace both **requirements.txt** and **setup.py**. Poetry uses the `pyproject.toml` file to define package details, main package dependencies, development dependencies, and tool-related configurations. Poetry resolves dependencies and stores the hashes and metadata within the `poetry.lock` file (similar to performing a `pip freeze > requirements.txt`). The `poetry.lock` is what is used to provide consistency for package versions across the project to make sure anyone who is developing on it is using the same Python dependency versions. Poetry also provides virtual environments by simply being in the same directory as the `pyproject.toml` and `poetry.lock` files and executing the `poetry shell` command.
 
 ## Why Invoke?
 
-Invoke is a Python replacement for Make. Invoke looks for a `tasks.py` file that contains functions decorated by `@task` that provides the equivalent of a **Make target**.
+Invoke is a Python replacement for Make. Invoke looks for a `tasks.py` file that contains functions decorated by `@task` that provide the equivalents of **Make targets**.
 
 The reason it was chosen over Makefile was due to our collective familiarity with Python and the ability to organize and re-use Invoke tasks across Cookiecutter templates.  It also makes managing your Nautobot project vastly simpler by issuing simple commands instead of long command strings that can be confusing.
 
@@ -30,7 +30,7 @@ Before beginning, install Docker and verify its operation by running `docker run
 
 ## Install Poetry
 
-It is recommended to follow one of the [installation methods detailed in their documentation](https://python-poetry.org/docs/#installation).  It's advised to install poetry as a system-lvel dependency and not inside a virtual environment.  Once Poetry has been installed you can create the Poetry virtual environment with few simple commands:
+It is recommended to follow one of the [installation methods detailed in their documentation](https://python-poetry.org/docs/#installation).  It's advised to install poetry as a system-level dependency and not inside a virtual environment.  Once Poetry has been installed you can create the Poetry virtual environment with a few simple commands:
 
 1. `poetry shell`
 2. `poetry lock`
@@ -45,7 +45,9 @@ You can build, deploy and populate Nautobot with the following steps
 1. `invoke build`
 2. `invoke start` or `invoke debug`
 
-Nautobot will be available on port 8080 locally http://localhost
+> The standard way of starting the containers is to use `invoke start`. If you wish to see the logs from the containers while running Nautobot use the `invoke debug` command. Be aware that exiting debug mode will stop all the containers.
+
+Nautobot will be available on port 8080 locally http://localhost:8080
 
 ## Cleanup Everything and start from scratch
 
@@ -53,6 +55,8 @@ Nautobot will be available on port 8080 locally http://localhost
 2. `invoke build`
 3. `invoke db-import`
 4. `invoke start`
+
+> The `invoke db-import` command will only work if you have a previous backup of your database.
 
 ## Export current database
 
@@ -64,10 +68,13 @@ While the database is already running
 
 Several Docker Compose files are provided as [overrides](https://docs.docker.com/compose/extends/) to allow for various development configurations, these can be thought of as layers to docker compose, each Compose file is described below:
 
-* `docker-compose.postgres.yml` - Starts the required prerequisite PostgreSQL services
-* `docker-compose.mysql.yml` - Starts the required prerequisite MySQL services
-* `docker-compose.base.yml` - Defines the Nautobot, Celery worker, Celery beats scheduler, and Redis services and how they should be run and built.
-* `docker-compose.local.yml` - Defines how the Nautobot and Celery worker containers should run locally.
+* `docker-compose.postgres.yml` - Starts the prerequisite PostgreSQL service if using PostgreSQL as your database.
+* `docker-compose.mysql.yml` - Starts the prerequisite MySQL service if using MySQL as your database is desired.
+* `docker-compose.base.yml` - Defines the default Nautobot, Celery worker, Celery beats scheduler, and Redis services and how they should be run and built.
+* `docker-compose.ldap.yml` - Duplicate of `docker-compose.base.yml` file but points to LDAP-specific Dockerfile. This is done to make building an LDAP-supported installation easier.
+* `docker-compose.local.yml` - Defines how the Nautobot and Celery worker containers should run locally with port mappings and volume mounts.
+
+> Only `docker-compose.postgres.yml` or `docker-compose.mysql.com` should be used as they are mutually exclusive and providing the same database backend service.
 
 ## CLI Helper Commands
 
@@ -75,7 +82,7 @@ The project comes with a CLI helper based on [invoke](http://www.pyinvoke.org/) 
 
 Each command can be executed with a simple `invoke <command>`. Each command also has its own help `invoke <command> --help`.
 
-## Manage Nautobot environment
+### Manage Nautobot environment
 
 ```bash
   build            Build all docker images.
@@ -87,7 +94,7 @@ Each command can be executed with a simple `invoke <command>`. Each command also
   db-import        Import test data.
 ```
 
-## Utility
+### Utility
 
 ```bash
   cli              Launch a bash shell inside the running Nautobot container.
@@ -95,7 +102,7 @@ Each command can be executed with a simple `invoke <command>`. Each command also
   nbshell          Launch a nbshell session.
 ```
 
-## NOTE - MySQL
+### NOTE - MySQL
 
 If you want to use MySQL for the database instead of PostgreSQL, perform the below step in place for step #7 below:
 
