@@ -32,7 +32,7 @@ RUN cd /source && \
     poetry export --without-hashes -o /tmp/dist/requirements.txt
 
 # -------------------------------------------------------------------------------------
-# Install all included plugins
+# Build Apps in plugins folder
 # -------------------------------------------------------------------------------------
 RUN for plugin in /source/plugins/*; do \
         cd $plugin && \
