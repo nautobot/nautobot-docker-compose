@@ -41,9 +41,6 @@ CACHES = {
     }
 }
 
-# RQ_QUEUES is not set here because it just uses the default that gets imported
-# up top via `from nautobot.core.settings import *`.
-
 # Redis Cacheops
 CACHEOPS_REDIS = parse_redis_connection(redis_database=1)
 
