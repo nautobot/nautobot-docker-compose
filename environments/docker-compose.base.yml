@@ -1,0 +1,65 @@
+---
+version: "3.8"
+x-nautobot-build: &nautobot-build
+  build:
+    args:
+      NAUTOBOT_VERSION: "${NAUTOBOT_VERSION}"
+      PYTHON_VER: "${PYTHON_VER}"
+    context: "../"
+    target: "nautobot"
+    dockerfile: "environments/Dockerfile"
+x-nautobot-base: &nautobot-base
+  image: "yourrepo/nautobot-docker-compose:local"
+  env_file:
+    - "local.env"
+    - "creds.env"
+  tty: true
+
+services:
+  nautobot:
+    depends_on:
+      - "db"
+      - "redis"
+    <<: [*nautobot-base, *nautobot-build]
+    # volumes:
+    #   - "./nautobot.key:/opt/nautobot/nautobot.key:ro"
+    #   - "./nautobot.crt:/opt/nautobot/nautobot.crt:ro"
+  celery_worker:
+    entrypoint:
+      - "sh"
+      - "-c"  # this is to evaluate the $NAUTOBOT_LOG_LEVEL from the env
+      - "nautobot-server celery worker -l $$NAUTOBOT_LOG_LEVEL --events"  ## $$ because of docker-compose
+    depends_on:
+      - "nautobot"
+    healthcheck:
+      interval: "30s"
+      timeout: "10s"
+      start_period: "30s"
+      retries: 3
+      test:
+        [
+          "CMD",
+          "bash",
+          "-c",
+          "nautobot-server celery inspect ping --destination celery@$$HOSTNAME"  ## $$ because of docker-compose
+        ]
+    <<: *nautobot-base
+  celery_beat:
+    entrypoint:
+      - "sh"
+      - "-c"  # this is to evaluate the $NAUTOBOT_LOG_LEVEL from the env
+      - "nautobot-server celery beat -l $$NAUTOBOT_LOG_LEVEL"  ## $$ because of docker-compose
+    depends_on:
+      - "nautobot"
+    healthcheck:
+      disable: true
+    <<: *nautobot-base
+  redis:
+    image: "redis:6-alpine"
+    command:
+      - "sh"
+      - "-c"  # this is to evaluate the $NAUTOBOT_REDIS_PASSWORD from the env
+      - "redis-server --appendonly yes --requirepass $$NAUTOBOT_REDIS_PASSWORD"
+    env_file:
+      - "local.env"
+      - "creds.env"

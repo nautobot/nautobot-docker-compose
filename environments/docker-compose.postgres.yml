@@ -1,0 +1,22 @@
+---
+version: "3.8"
+services:
+  db:
+    image: "postgres:13-alpine"
+    env_file:
+      - "local.env"
+      - "creds.env"
+    command:
+      - "-c"
+      - "max_connections=1000"
+    volumes:
+      # - "./nautobot.sql:/tmp/nautobot.sql"
+      - "postgres_data:/var/lib/postgresql/data"
+    healthcheck:
+      test: "pg_isready --username=$$POSTGRES_USER --dbname=$$POSTGRES_DB"
+      interval: "10s"
+      timeout: "5s"
+      retries: 10
+
+volumes:
+  postgres_data: {}

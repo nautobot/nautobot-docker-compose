@@ -1,0 +1,36 @@
+---
+version: "3.8"
+services:
+  nautobot:
+    environment:
+      - "NAUTOBOT_DB_ENGINE=django.db.backends.mysql"
+    env_file:
+      - "local.env"
+      - "creds.env"
+  celery_worker:
+    environment:
+      - "NAUTOBOT_DB_ENGINE=django.db.backends.mysql"
+    env_file:
+      - "local.env"
+      - "creds.env"
+  db:
+    image: "mysql:8"
+    command:
+      - "--default-authentication-plugin=mysql_native_password"
+      - "--max_connections=1000"
+    env_file:
+      - "local.env"
+      - "creds.env"
+    volumes:
+      - "mysql_data:/var/lib/mysql"
+    healthcheck:
+      test:
+        - "CMD"
+        - "mysqladmin"
+        - "ping"
+        - "-h"
+        - "localhost"
+      timeout: "20s"
+      retries: 10
+volumes:
+  mysql_data: {}

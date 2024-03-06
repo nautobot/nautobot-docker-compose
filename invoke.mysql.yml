@@ -1,0 +1,10 @@
+---
+nautobot_docker_compose:
+  project_name: "nautobot-docker-compose"
+  python_ver: "3.9"
+  local: false
+  compose_dir: "environments/"
+  compose_files:
+    - "docker-compose.mysql.yml"
+    - "docker-compose.base.yml"
+    - "docker-compose.local.yml"
