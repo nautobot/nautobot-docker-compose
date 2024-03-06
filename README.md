@@ -102,15 +102,6 @@ Each command can be executed with a simple `invoke <command>`. Each command also
   nbshell          Launch a nbshell session.
 ```
 
-### NOTE - MySQL
-
-If you want to use MySQL for the database instead of PostgreSQL, perform the below step in place for step #7 below:
-
-```bash
-cp invoke.mysql.yml invoke.yml
-invoke build start
-```
-
 ## Getting Started
 
 > **NOTE**: Please be aware that you must be in the Poetry virtual environment before issuing any invoke commands. The steps to do this are detailed above.
@@ -154,10 +145,18 @@ chmod 0600 environments/local.env environments/creds.env
 cp invoke.example.yml invoke.yml
 ```
 
-7. Run `invoke build start` to build the containers and start the environment.
+8. Run `invoke build start` to build the containers and start the environment.
 
 ```bash
 invoke build start
+```
+
+### NOTE - MySQL
+
+If you want to use MySQL for the database instead of PostgreSQL, perform the below step in place for step #7 above:
+
+```bash
+cp invoke.mysql.yml invoke.yml
 ```
 
 ## Getting Started - LDAP
