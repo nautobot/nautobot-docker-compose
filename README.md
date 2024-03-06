@@ -174,11 +174,11 @@ If you want to use MySQL for the database instead of PostgreSQL, perform the bel
 cp invoke.mysql.yml invoke.yml
 ```
 
-## Getting Started - LDAP
+### Getting Started - LDAP
 
 The use of LDAP requires the installation of some additional libraries and some configuration in `nautobot_config.py`. See the [LDAP documentation](docs/ldap.md).
 
-## Getting Started - Plugins
+### Getting Started - Plugins
 
 The installation of plugins has a slightly more involved getting-started process. See the [Plugin documentation](docs/plugins.md).
 
