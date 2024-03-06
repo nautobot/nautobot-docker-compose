@@ -76,6 +76,21 @@ Several Docker Compose files are provided as [overrides](https://docs.docker.com
 
 > Only `docker-compose.postgres.yml` or `docker-compose.mysql.com` should be used as they are mutually exclusive and providing the same database backend service.
 
+### Environment Files
+
+Environment files (.env) are the standard way of providing configuration information or secrets in Docker containers. This project includes two example environment files that each serve a specific purpose:
+
+* `local.example.env` - The local environment file is intended to store all relevant configurations that are safe to be stored in git. This would typically be things like specifying the database user or whether debug is enabled or not. Do not store secrets, ie passwords or tokens, in this file!
+
+* `creds.example.env` - The creds environment file is intended to store all configuration information that you wish to keep out of git. The `creds.env` file is in `.gitignore` and thus will not be pushed to git by default. This is essential to keep passwords and tokens from being leaked accidentally.
+
+To use the provided environment files it's suggested that you copy the file to the same name without the `example` keyword, ie:
+
+```bash
+cp environments/local.example.env environments/local.env
+cp environments/creds.example.env environments/creds.env
+```
+
 ## CLI Helper Commands
 
 The project comes with a CLI helper based on [invoke](http://www.pyinvoke.org/) to help manage the Nautobot environment. The commands are listed below in 2 categories `environment` and `utility`.
