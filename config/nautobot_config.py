@@ -25,22 +25,6 @@ LOG_LEVEL = "DEBUG" if DEBUG else "INFO"
 # Redis
 #
 
-# The django-redis cache is used to establish concurrent locks using Redis. The
-# django-rq settings will use the same instance/database by default.
-#
-# This "default" server is now used by RQ_QUEUES.
-# >> See: nautobot.core.settings.RQ_QUEUES
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": parse_redis_connection(redis_database=0),
-        "TIMEOUT": 300,
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        },
-    }
-}
-
 # Redis Cacheops
 CACHEOPS_REDIS = parse_redis_connection(redis_database=1)
 
