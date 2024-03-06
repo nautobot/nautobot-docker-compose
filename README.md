@@ -66,13 +66,13 @@ While the database is already running
 
 ### Docker Compose Files
 
-Several Docker Compose files are provided as [overrides](https://docs.docker.com/compose/extends/) to allow for various development configurations, these can be thought of as layers to docker compose, each Compose file is described below:
+Several Docker Compose files are provided as [overrides](https://docs.docker.com/compose/extends/) to allow for various development configurations, these can be thought of as layers to Docker Compose, each Compose file is described below:
 
 * `docker-compose.postgres.yml` - Starts the prerequisite PostgreSQL service if using PostgreSQL as your database.
 * `docker-compose.mysql.yml` - Starts the prerequisite MySQL service if using MySQL as your database is desired.
 * `docker-compose.base.yml` - Defines the default Nautobot, Celery worker, Celery beats scheduler, and Redis services and how they should be run and built.
 * `docker-compose.ldap.yml` - Duplicate of `docker-compose.base.yml` file but points to LDAP-specific Dockerfile. This is done to make building an LDAP-supported installation easier.
-* `docker-compose.local.yml` - Defines how the Nautobot and Celery worker containers should run locally with port mappings and volume mounts. This is helpful as an example when you wish to create another instance, for example a production instance, and you want to have the volume mounts and port mappings done differently.
+* `docker-compose.local.yml` - Defines how the Nautobot and Celery worker containers should run locally with port mappings and volume mounts. This is helpful as an example when you wish to create another instance, for example, a production instance, and you want to have the volume mounts and port mappings done differently.
 
 > Only `docker-compose.postgres.yml` or `docker-compose.mysql.com` should be used as they are mutually exclusive and providing the same database backend service.
 
