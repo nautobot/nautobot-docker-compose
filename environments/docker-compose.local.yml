@@ -1,0 +1,20 @@
+---
+version: "3.8"
+services:
+  nautobot:
+    command: "nautobot-server runserver 0.0.0.0:8080"
+    ports:
+      - "8080:8080"
+    volumes:
+      - "../config/nautobot_config.py:/opt/nautobot/nautobot_config.py"
+      - "../jobs:/opt/nautobot/jobs"
+    healthcheck:
+      interval: "30s"
+      timeout: "10s"
+      start_period: "60s"
+      retries: 3
+      test: ["CMD", "true"]  # Due to layering, disable: true won't work. Instead, change the test
+  celery_worker:
+    volumes:
+      - "../config/nautobot_config.py:/opt/nautobot/nautobot_config.py"
+      - "../jobs:/opt/nautobot/jobs"
