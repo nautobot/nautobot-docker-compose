@@ -250,7 +250,10 @@ def db_export(context):
     sleep(2)  # Wait for the database to be ready
 
     print("Exporting the database as an SQL dump...")
-    export_cmd = 'exec db sh -c "pg_dump -h localhost -d \${NAUTOBOT_DB_NAME} -U \${NAUTOBOT_DB_USER} > /tmp/nautobot.sql"'  # noqa: W605 pylint: disable=anomalous-backslash-in-string
+    if "docker-compose.mysql.yml" in context.nautobot_docker_compose.compose_files:
+        export_cmd = 'exec db sh -c "mysqldump -u \${NAUTOBOT_DB_USER} –p \${NAUTOBOT_DB_PASSWORD} \${NAUTOBOT_DB_NAME} nautobot > /tmp/nautobot.sql"'  # noqa: W605 pylint: disable=anomalous-backslash-in-string
+    else:
+        export_cmd = 'exec db sh -c "pg_dump -h localhost -d \${NAUTOBOT_DB_NAME} -U \${NAUTOBOT_DB_USER} > /tmp/nautobot.sql"'  # noqa: W605 pylint: disable=anomalous-backslash-in-string
     docker_compose(context, export_cmd, pty=True)
 
     copy_cmd = f"docker cp {context.nautobot_docker_compose.project_name}_postgres_1:/tmp/nautobot.sql dev/nautobot.sql"
@@ -272,5 +275,8 @@ def db_import(context):
     context.run(copy_cmd)
 
     print("Importing DB...\n")
-    import_cmd = 'exec db sh -c "psql -h localhost -U \${NAUTOBOT_DB_USER} < /tmp/nautobot.sql"'  # noqa: W605 pylint: disable=anomalous-backslash-in-string
+    if "docker-compose.mysql.yml" in context.nautobot_docker_compose.compose_files:
+        import_cmd = 'exec db sh -c "mysql -u \${NAUTOBOT_DB_USER} –p \${NAUTOBOT_DB_PASSWORD} < /tmp/nautobot.sql"'  # noqa: W605 pylint: disable=anomalous-backslash-in-string
+    else:
+        import_cmd = 'exec db sh -c "psql -h localhost -U \${NAUTOBOT_DB_USER} < /tmp/nautobot.sql"'  # noqa: W605 pylint: disable=anomalous-backslash-in-string
     docker_compose(context, import_cmd, pty=True)
