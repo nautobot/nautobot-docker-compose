@@ -27,7 +27,7 @@ def is_truthy(arg):
 namespace = Collection("nautobot_docker_compose")
 namespace.configure(
     {
-        "nautobot-docker-compose": {
+        "nautobot_docker_compose": {
             "project_name": "nautobot_docker_compose",
             "python_ver": "3.8",
             "local": False,
