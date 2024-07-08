@@ -252,10 +252,10 @@ def db_export(context):
     print("Exporting the database as an SQL dump...")
     if "docker-compose.mysql.yml" in context.nautobot_docker_compose.compose_files:
         export_cmd = 'exec db sh -c "mysqldump -u \${NAUTOBOT_DB_USER} –p \${NAUTOBOT_DB_PASSWORD} \${NAUTOBOT_DB_NAME} nautobot > /tmp/nautobot.sql"'  # noqa: W605 pylint: disable=anomalous-backslash-in-string
-        copy_cmd = f"docker cp {context.nautobot_docker_compose.project_name}-mysql-1:/tmp/nautobot.sql nautobot.sql"
+        copy_cmd = f"docker cp {context.nautobot_docker_compose.project_name}-db-1:/tmp/nautobot.sql nautobot.sql"
     else:
         export_cmd = 'exec db sh -c "pg_dump -h localhost -d \${NAUTOBOT_DB_NAME} -U \${NAUTOBOT_DB_USER} > /tmp/nautobot.sql"'  # noqa: W605 pylint: disable=anomalous-backslash-in-string
-        copy_cmd = f"docker cp {context.nautobot_docker_compose.project_name}-postgres-1:/tmp/nautobot.sql nautobot.sql"
+        copy_cmd = f"docker cp {context.nautobot_docker_compose.project_name}-db-1:/tmp/nautobot.sql nautobot.sql"
     docker_compose(context, export_cmd, pty=True)
     print("Copying the SQL Dump locally...")
     context.run(copy_cmd)
@@ -272,10 +272,10 @@ def db_import(context):
 
     print("Copying DB Dump to DB container...\n")
     if "docker-compose.mysql.yml" in context.nautobot_docker_compose.compose_files:
-        copy_cmd = f"docker cp nautobot.sql {context.nautobot_docker_compose.project_name}-mysql-1:/tmp/nautobot.sql"
+        copy_cmd = f"docker cp nautobot.sql {context.nautobot_docker_compose.project_name}-db-1:/tmp/nautobot.sql"
         import_cmd = 'exec db sh -c "mysql -u \${NAUTOBOT_DB_USER} –p \${NAUTOBOT_DB_PASSWORD} < /tmp/nautobot.sql"'  # noqa: W605 pylint: disable=anomalous-backslash-in-string
     else:
-        copy_cmd = f"docker cp nautobot.sql {context.nautobot_docker_compose.project_name}-postgres-1:/tmp/nautobot.sql"
+        copy_cmd = f"docker cp nautobot.sql {context.nautobot_docker_compose.project_name}-db-1:/tmp/nautobot.sql"
         import_cmd = 'exec db sh -c "psql -h localhost -U \${NAUTOBOT_DB_USER} < /tmp/nautobot.sql"'  # noqa: W605 pylint: disable=anomalous-backslash-in-string
     context.run(copy_cmd)
 
