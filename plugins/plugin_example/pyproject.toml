@@ -7,7 +7,7 @@ authors = ["Network to Code <info@networktocode.com>"]
 [tool.poetry.dependencies]
 python = "^3.8,<3.12"
 nautobot = "^2.0.0"
-nautobot-device-onboarding = "^3.0.0"
+nautobot-device-onboarding = ">=3.0.0,<5.0.0"
 
 [tool.poetry.dev-dependencies]
 bandit = "*"
