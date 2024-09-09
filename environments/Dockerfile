@@ -53,15 +53,16 @@ WORKDIR /source
 # -------------------------------------------------------------------------------------
 FROM nautobot-base as nautobot
 
+ARG PYTHON_VER
 # Copy from base the required python libraries and binaries
 COPY --from=builder /tmp/dist /tmp/dist
 COPY --from=builder /opt/nautobot /opt/nautobot
+COPY --from=builder /usr/local/lib/python${PYTHON_VER}/site-packages /usr/local/lib/python${PYTHON_VER}/site-packages
+COPY --from=builder /usr/local/bin /usr/local/bin
 # COPY ../packages /source/packages
 
-RUN grep -v /source/plugins /tmp/dist/requirements.txt > /tmp/dist/new_requirements.txt && \
-    pip install -r /tmp/dist/new_requirements.txt && \
-    pip install /tmp/dist/*.whl && \
-    rm -rf /source /tmp/dist && \
-    chown -R nautobot:nautobot /opt/nautobot
+# Verify that pyuwsgi was installed correctly, i.e. with SSL support
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN pyuwsgi --cflags | sed 's/ /\n/g' | grep -e "^-DUWSGI_SSL$"
 
 USER nautobot
