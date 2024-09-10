@@ -6,8 +6,7 @@ authors = ["John Doe <johndoe@mail.com>"]
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.12"
-nautobot = "2.1.1"
-nautobot-example-plugin = {path = "plugins/plugin_example", develop = true}
+nautobot = "2.3.2"
 
 [tool.poetry.dev-dependencies]
 invoke = "*"
