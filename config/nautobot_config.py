@@ -5,7 +5,7 @@ import os
 import sys
 
 from nautobot.core.settings import *  # noqa: F403  # pylint: disable=wildcard-import,unused-wildcard-import
-from nautobot.core.settings_funcs import parse_redis_connection, is_truthy
+from nautobot.core.settings_funcs import is_truthy, parse_redis_connection
 
 #
 # Debug
@@ -34,7 +34,8 @@ CACHEOPS_REDIS = parse_redis_connection(redis_database=1)
 #
 
 # Enable installed plugins. Add the name of each plugin to the list.
-PLUGINS = ["nautobot_example_plugin"]
+# PLUGINS = ["nautobot_example_plugin"]
+PLUGINS = []
 
 # Plugins configuration settings. These settings are used by various plugins that the user may have installed.
 # Each key in the dictionary is the name of an installed plugin and its value is a dictionary of settings.
