@@ -8,6 +8,9 @@ authors = ["John Doe <johndoe@mail.com>"]
 python = ">=3.9,<3.12"
 nautobot = "2.3.2"
 
+# nautobot-example-plugin = {path = "plugins/plugin_example", develop = true}
+
+
 [tool.poetry.dev-dependencies]
 invoke = "*"
 toml = "*"

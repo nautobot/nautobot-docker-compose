@@ -34,11 +34,11 @@ RUN cd /source && \
 # -------------------------------------------------------------------------------------
 # Build Apps in plugins folder
 # -------------------------------------------------------------------------------------
-RUN for plugin in /source/plugins/*; do \
-        cd $plugin && \
-        poetry build && \
-        cp dist/*.whl /tmp/dist; \
-    done
+# RUN for plugin in /source/plugins/*; do \
+#         cd $plugin && \
+#         poetry build && \
+#         cp dist/*.whl /tmp/dist; \
+#     done
 
 COPY ../jobs /opt/nautobot/jobs
 # COPY ../metrics /opt/nautobot/metrics
