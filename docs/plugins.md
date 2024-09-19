@@ -1,8 +1,10 @@
 # App Installation
 
-To add Apps you will need to build a custom container with the App(s) installed.  There are multiple ways to add an App to your environment but this document will show the standard method pulling from PyPI.
+To add Apps you will need to build a custom container with the App(s) installed.  There are multiple ways to add an App to your environment but this document will describe two options, the first is the [standard method pulling from PyPI](#adding-apps-using-pypi) and the second will be to [using the `plugins` folder](#adding-apps-using-plugins-folder).
 
 ## Getting Started Using Apps
+
+### Adding Apps using PyPI
 
 1. Follow the steps in the README to create your Poetry environment and ensure you can build a container.
 2. There are two methods by which to add a specific App to your environment with Poetry:
@@ -41,6 +43,28 @@ invoke build --no-cache
 
 ```bash
 invoke stop start
+```
+
+### Adding Apps Using Plugins Folder
+
+In addition to adding Apps via PyPI, you can add Apps into your instance by having the code in the `plugins` folder. As long as the App folder contains a `pyproject.toml` file you can add the App with the following methods:
+
+#### Reference App in pyproject.toml
+
+You can point to the App folder in the project `pyproject.toml` like so:
+
+`nautobot-example-plugin = {path = "plugins/plugin_example"}`
+
+### Install App from Wheel
+
+The other option to install an App would be to uncomment the section of the Dockerfile that starts at line 37:
+
+```text
+# RUN for plugin in /source/plugins/*; do \
+#         cd $plugin && \
+#         poetry build && \
+#         cp dist/*.whl /tmp/dist; \
+#     done
 ```
 
 ## Nautobot Configuration
