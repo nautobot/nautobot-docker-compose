@@ -11,3 +11,4 @@ rules:
 ignore: |
   .venv/
   compose.yaml
+# THIS IS A COMMENT
