@@ -61,6 +61,8 @@ COPY --from=builder /usr/local/lib/python${PYTHON_VER}/site-packages /usr/local/
 COPY --from=builder /usr/local/bin /usr/local/bin
 # COPY ../packages /source/packages
 
+ENV INVOKE_NAUTOBOT_DOCKER_COMPOSE_LOCAL=false
+
 # Verify that pyuwsgi was installed correctly, i.e. with SSL support
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN pyuwsgi --cflags | sed 's/ /\n/g' | grep -e "^-DUWSGI_SSL$"

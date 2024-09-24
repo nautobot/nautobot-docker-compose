@@ -1,11 +1,12 @@
 ---
 name: "CI"
 on:  # yamllint disable
-  - "push"
   - "pull_request"
 jobs:
   yamllint:
     runs-on: "ubuntu-20.04"
+    env:
+      INVOKE_NAUTOBOT_DOCKER_COMPOSE_LOCAL: "True"
     steps:
       - name: "Check out repository code"
         uses: "actions/checkout@v2"
