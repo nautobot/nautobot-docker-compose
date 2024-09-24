@@ -29,7 +29,7 @@ namespace.configure(
     {
         "nautobot_docker_compose": {
             "project_name": "nautobot_docker_compose",
-            "python_ver": "3.8",
+            "python_ver": "3.10",
             "local": False,
             "use_django_extensions": True,
             "compose_dir": os.path.join(os.path.dirname(__file__), "environments/"),
@@ -281,3 +281,42 @@ def db_import(context):
 
     print("Importing DB...\n")
     docker_compose(context, import_cmd, pty=True)
+
+# ------------------------------------------------------------------------------
+# TESTS
+# ------------------------------------------------------------------------------
+
+@task(
+    help={
+        "keepdb": "save and re-use test database between test runs for faster re-testing.",
+        "label": "specify a directory or module to test instead of running all Nautobot tests",
+        "failfast": "fail as soon as a single test fails don't run the entire test suite",
+        "buffer": "Discard output from passing tests",
+        "pattern": "Run specific test methods, classes, or modules instead of all tests",
+        "verbose": "Enable verbose test output.",
+    }
+)
+def unittest(  # noqa: PLR0913
+    context,
+    keepdb=False,
+    label="tests",
+    failfast=False,
+    buffer=True,
+    pattern="",
+    verbose=False,
+):
+    """Run Nautobot unit tests."""
+    command = f"coverage run --module nautobot.core.cli test {label}"
+
+    if keepdb:
+        command += " --keepdb"
+    if failfast:
+        command += " --failfast"
+    if buffer:
+        command += " --buffer"
+    if pattern:
+        command += f" -k='{pattern}'"
+    if verbose:
+        command += " --verbosity 2"
+
+    run_command(context, command)

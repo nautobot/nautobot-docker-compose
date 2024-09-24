@@ -7,6 +7,7 @@ services:
     volumes:
       - "../config/nautobot_config.py:/opt/nautobot/nautobot_config.py"
       - "../jobs:/opt/nautobot/jobs"
+      - "../tests:/opt/nautobot/tests"
     healthcheck:
       interval: "30s"
       timeout: "10s"
@@ -17,3 +18,4 @@ services:
     volumes:
       - "../config/nautobot_config.py:/opt/nautobot/nautobot_config.py"
       - "../jobs:/opt/nautobot/jobs"
+      - "../tests:/opt/nautobot/tests"
