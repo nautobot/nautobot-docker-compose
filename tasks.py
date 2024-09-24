@@ -320,3 +320,13 @@ def unittest(  # noqa: PLR0913
         command += " --verbosity 2"
 
     run_command(context, command)
+
+@task
+def yamllint(context):
+    """Run yamllint to validate formatting adheres to NTC defined YAML standards.
+
+    Args:
+        context (obj): Used to run specific commands
+    """
+    command = "yamllint . --format standard"
+    run_command(context, command)

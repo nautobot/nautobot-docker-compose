@@ -8,6 +8,7 @@ services:
       - "../config/nautobot_config.py:/opt/nautobot/nautobot_config.py"
       - "../jobs:/opt/nautobot/jobs"
       - "../tests:/opt/nautobot/tests"
+      - "../.yamllint.yml:/opt/nautobot/.yamllint.yml"
     healthcheck:
       interval: "30s"
       timeout: "10s"
@@ -19,3 +20,4 @@ services:
       - "../config/nautobot_config.py:/opt/nautobot/nautobot_config.py"
       - "../jobs:/opt/nautobot/jobs"
       - "../tests:/opt/nautobot/tests"
+      - "../.yamllint.yml:/opt/nautobot/.yamllint.yml"
