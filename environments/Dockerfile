@@ -1,8 +1,10 @@
 ARG NAUTOBOT_VERSION="2.3.2"
 ARG PYTHON_VER="3.10"
-FROM ghcr.io/nautobot/nautobot-dev:${NAUTOBOT_VERSION}-py${PYTHON_VER} AS nautobot-base
+FROM ghcr.io/nautobot/nautobot-dev:${NAUTOBOT_VERSION}-py${PYTHON_VER} AS nautobot
 
 USER 0
+
+CMD ["nautobot-server", "runserver", "0.0.0.0:8080", "--insecure"]
 
 RUN apt-get update && \
     apt-get upgrade -y && \
@@ -11,25 +13,34 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* && \
     pip --no-cache-dir install --upgrade pip wheel
 
-FROM ghcr.io/nautobot/nautobot-dev:${NAUTOBOT_VERSION}-py${PYTHON_VER} AS builder
-
-CMD ["nautobot-server", "runserver", "0.0.0.0:8080", "--insecure"]
-
-RUN apt-get update && \
-    apt-get upgrade -y && \
-    apt-get autoremove -y && \
-    apt-get clean all && \
-    rm -rf /var/lib/apt/lists/*
-
 COPY ../pyproject.toml ../poetry.lock /source/
 COPY ../plugins /source/plugins
-# COPY ../packages /source/packages
 
 # Install the nautobot project to include Nautobot
 RUN cd /source && \
     poetry install --no-interaction --no-ansi && \
     mkdir /tmp/dist && \
     poetry export --without-hashes -o /tmp/dist/requirements.txt
+
+# FROM ghcr.io/nautobot/nautobot-dev:${NAUTOBOT_VERSION}-py${PYTHON_VER} AS builder
+
+# CMD ["nautobot-server", "runserver", "0.0.0.0:8080", "--insecure"]
+
+# RUN apt-get update && \
+#     apt-get upgrade -y && \
+#     apt-get autoremove -y && \
+#     apt-get clean all && \
+#     rm -rf /var/lib/apt/lists/*
+
+# COPY ../pyproject.toml ../poetry.lock /source/
+# COPY ../plugins /source/plugins
+# COPY ../packages /source/packages
+
+# Install the nautobot project to include Nautobot
+# RUN cd /source && \
+#     poetry install --no-interaction --no-ansi && \
+#     mkdir /tmp/dist && \
+#     poetry export --without-hashes -o /tmp/dist/requirements.txt
 
 # -------------------------------------------------------------------------------------
 # Build Apps in plugins folder
@@ -44,16 +55,16 @@ COPY ../jobs /opt/nautobot/jobs
 # COPY ../metrics /opt/nautobot/metrics
 COPY ../config/nautobot_config.py /opt/nautobot/nautobot_config.py
 
-WORKDIR /source
+# WORKDIR /source
 
 ###################################
 
 # -------------------------------------------------------------------------------------
 # Final Image
 # -------------------------------------------------------------------------------------
-FROM nautobot-base AS nautobot
+# FROM nautobot-base AS nautobot
 
-ARG PYTHON_VER="3.10"
+# ARG PYTHON_VER="3.10"
 
 # Install Poetry manually via its installer script;
 # We might be using an older version of Nautobot that includes an older version of Poetry
@@ -64,10 +75,10 @@ RUN which poetry || curl -sSL https://install.python-poetry.org | python3 - && \
   poetry config virtualenvs.create false
 
 # Copy from base the required python libraries and binaries
-COPY --from=builder /tmp/dist /tmp/dist
-COPY --from=builder /opt/nautobot /opt/nautobot
-COPY --from=builder /usr/local/lib/python${PYTHON_VER}/site-packages /usr/local/lib/python${PYTHON_VER}/site-packages
-COPY --from=builder /usr/local/bin /usr/local/bin
+# COPY --from=builder /tmp/dist /tmp/dist
+# COPY --from=builder /opt/nautobot /opt/nautobot
+# COPY --from=builder /usr/local/lib/python${PYTHON_VER}/site-packages /usr/local/lib/python${PYTHON_VER}/site-packages
+# COPY --from=builder /usr/local/bin /usr/local/bin
 # COPY ../packages /source/packages
 # Copy in the source code
 WORKDIR /source
