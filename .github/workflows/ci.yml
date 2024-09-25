@@ -15,8 +15,6 @@ jobs:
       - name: "Linting: yamllint"
         run: "poetry run invoke yamllint"
   unittest:
-    # needs:
-    #   - "check-in-docker"
     strategy:
       fail-fast: true
       matrix:
@@ -57,7 +55,6 @@ jobs:
           context: "./"
           push: false
           load: true
-          # tags: "${{ env.APP_NAME }}/nautobot:${{ matrix.nautobot-version }}-py${{ matrix.python-version }}"
           file: "./environments/Dockerfile"
           cache-from: "type=gha,scope=${{ matrix.nautobot-version }}-py${{ matrix.python-version }}"
           cache-to: "type=gha,scope=${{ matrix.nautobot-version }}-py${{ matrix.python-version }}"
@@ -65,9 +62,5 @@ jobs:
             NAUTOBOT_VER=${{ matrix.nautobot-version }}
             PYTHON_VER=${{ matrix.python-version }}
             CI=true
-      # - name: "Copy credentials"
-      #   run: "cp environments/creds.example.env environments/creds.env"
-      # - name: "Copy local ENV vars"
-      #   run: "cp environments/local.example.env environments/local.env"
       - name: "Run Tests"
         run: "poetry run invoke unittest"
