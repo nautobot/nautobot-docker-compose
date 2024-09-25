@@ -58,7 +58,7 @@ jobs:
           push: false
           load: true
           # tags: "${{ env.APP_NAME }}/nautobot:${{ matrix.nautobot-version }}-py${{ matrix.python-version }}"
-          file: "./development/Dockerfile"
+          file: "./environments/Dockerfile"
           cache-from: "type=gha,scope=${{ matrix.nautobot-version }}-py${{ matrix.python-version }}"
           cache-to: "type=gha,scope=${{ matrix.nautobot-version }}-py${{ matrix.python-version }}"
           build-args: |
