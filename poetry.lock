@@ -1692,6 +1692,22 @@ docs = ["sphinx", "sphinx-rtd-theme", "zope.interface"]
 tests = ["coverage[toml] (==5.0.4)", "pytest (>=6.0.0,<7.0.0)"]
 
 [[package]]
+name = "pynautobot"
+version = "2.2.1"
+description = "Nautobot API client library"
+optional = false
+python-versions = "<4.0.0,>=3.8.1"
+files = [
+    {file = "pynautobot-2.2.1-py3-none-any.whl", hash = "sha256:52d3d0581f25fc1157dce666fb8b4e0fc0491dfab02d1b72fd78aca4a9258be7"},
+    {file = "pynautobot-2.2.1.tar.gz", hash = "sha256:0fa0fc2cbac8372d7cdf1d1e0abc396842760bf4934e31aba8517ab2171f2828"},
+]
+
+[package.dependencies]
+packaging = ">=23.2,<24.0"
+requests = ">=2.30.0,<3.0.0"
+urllib3 = ">=1.21.1,<1.27"
+
+[[package]]
 name = "python-crontab"
 version = "3.2.0"
 description = "Python Crontab API"
@@ -2331,4 +2347,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.12"
-content-hash = "a1a4be6bc06cb066a62d6cc2b1c745b1a1f52077f3d7ce8cbc86140739602c66"
+content-hash = "bc9c458deaba4f5a28274dfaac14e0bb2bb76c61722d67a1d4517bd0180e1d67"
