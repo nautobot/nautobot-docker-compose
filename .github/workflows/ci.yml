@@ -93,7 +93,7 @@ jobs:
         uses: "networktocode/gh-action-setup-poetry-environment@v6"
       - name: "Install dependencies"
         run: "poetry install --no-root"
-      - name: "Sync Jobs Repo"
+      - name: "DRYRUN Run Design Jobs"
         run: "poetry run python DRYRUN_run_design_jobs.py"
   run_design_jobs:
     needs: "run_design_jobs_DRYRUN"
@@ -107,5 +107,5 @@ jobs:
         uses: "networktocode/gh-action-setup-poetry-environment@v6"
       - name: "Install dependencies"
         run: "poetry install --no-root"
-      - name: "Sync Jobs Repo"
+      - name: "Run Design Jobs"
         run: "poetry run python run_design_jobs.py"
