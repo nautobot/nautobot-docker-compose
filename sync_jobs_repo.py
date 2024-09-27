@@ -11,7 +11,7 @@ jobs_repo = nb.extras.git_repositories.get(name="Jobs Repo")
 job_run = nb.extras.jobs.run(job_id=sync_repo_job.id, data={"repository": jobs_repo.id})
 result = nb.extras.job_results.get(job_run.job_result.id)
 
-job_statuses = ["PENDING", "FAILED", "COMPLETED", "CANCELLED", "CREATED", "SUCCESS"]
+job_statuses = ["PENDING", "FAILURE", "COMPLETED", "CANCELLED", "CREATED", "SUCCESS"]
 
 while result.status.value not in job_statuses:
     result = nb.extras.job_results.get(job_run.job_result.id)
