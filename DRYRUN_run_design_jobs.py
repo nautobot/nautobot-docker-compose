@@ -17,5 +17,8 @@ while result.status.value not in job_statuses:
     print("Design Job is running...")
     sleep(1)
 
+if result.status.value != "SUCCESS":
+    msg = f"Design Job DRYRUN failed with traceback `{result.traceback}`"
+    raise Exception(msg)
 
 print(f"Job completed with status `{result.status.value}`")
