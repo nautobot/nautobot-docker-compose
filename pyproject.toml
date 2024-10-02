@@ -9,6 +9,7 @@ python = ">=3.9,<3.12"
 nautobot = "2.3.2"
 
 # nautobot-example-plugin = {path = "plugins/plugin_example", develop = true}
+toml = "^0.10.2"
 
 
 [tool.poetry.dev-dependencies]
