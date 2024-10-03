@@ -45,7 +45,10 @@ namespace.configure(
 with open("pyproject.toml", "r", encoding="utf8") as pyproject:
     parsed_toml = toml.load(pyproject)
 
-NAUTOBOT_VERSION = parsed_toml["tool"]["poetry"]["dependencies"]["nautobot"]
+try:
+    NAUTOBOT_VERSION = parsed_toml["tool"]["poetry"]["dependencies"]["nautobot"]["version"]
+except TypeError:
+    NAUTOBOT_VERSION = parsed_toml["tool"]["poetry"]["dependencies"]["nautobot"]
 
 
 def task(function=None, *args, **kwargs):  # pylint: disable=keyword-arg-before-vararg
