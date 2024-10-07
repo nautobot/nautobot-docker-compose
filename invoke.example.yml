@@ -1,7 +1,7 @@
 ---
 nautobot_docker_compose:
   project_name: "nautobot-docker-compose"
-  python_ver: "3.9"
+  python_ver: "3.12"
   local: false
   compose_dir: "environments/"
   compose_files:
