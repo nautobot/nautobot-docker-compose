@@ -3,10 +3,11 @@ name = "nautobot-docker-compose"
 version = "0.1.1"
 description = ""
 authors = ["John Doe <johndoe@mail.com>"]
+package-mode = false
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.12"
-nautobot = "2.3.2"
+nautobot = "2.3.6"
 
 # nautobot-example-plugin = {path = "plugins/plugin_example", develop = true}
 nautobot-design-builder = "^2.0.0"
