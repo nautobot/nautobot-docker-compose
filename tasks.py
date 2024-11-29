@@ -160,7 +160,7 @@ def restart(context):
 @task
 def stop(context):
     """Stop Nautobot and its dependencies."""
-    print("Stopping Nautobot...")
+    print("Stopping Nautobot (deleting containers)...")
     docker_compose(context, "down")
 
 
@@ -169,6 +169,24 @@ def destroy(context):
     """Destroy all containers and volumes."""
     print("Destroying Nautobot...")
     docker_compose(context, "down --volumes")
+
+@task
+def logs(context):
+    """Show logs for all Nautobot services defined in the docker-compose files."""
+    print("Showing Nautobot Logs")
+    docker_compose(context, "logs --follow --tail 500")
+
+@task
+def softstart(context):
+    """Start Nautobot containers when previously stopped (not deleted)."""
+    print("Starting Nautobot back up...")
+    docker_compose(context, "start")
+
+@task
+def softstop(context):
+    """Stop Nautobot containers without deleting them."""
+    print("Stopping Nautobot Containers...")
+    docker_compose(context, "stop")
 
 
 # ------------------------------------------------------------------------------
