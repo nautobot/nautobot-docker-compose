@@ -24,6 +24,10 @@ The reason it was chosen over Makefile was due to our collective familiarity wit
 
 This repo is designed to provide a custom build of Nautobot to include a set of plugins which can then be used in a development environment or deployed in production.  Included in this repo is a skeleton Nautobot plugin which is designed only to provide a quick example of how a plugin could be developed.  Plugins should ultimately be built as packages, published to a PyPI style repository and added to the poetry `pyproject.toml` in this repo.  The plugin code should be hosted in their own repositories with their own CI pipelines and not included here.
 
+Are you installing Nautobot for the first time to locally try out the application? After installing Poetry and Docker, jump down to [Getting Started](#getting-started) for a step-by-step guide to install the application. 
+
+If you want to play with a cloud instance, you can always access [the Nautobot Demo Instance](https://demo.nautobot.com/) online. 
+
 ## Install Docker
 
 Before beginning, install Docker and verify its operation by running `docker run hello-world`. If you encounter any issues connecting to the Docker service, check that your local user account is permitted to run Docker. **Note:** `docker` v1.10.0 or later is required.
@@ -183,6 +187,8 @@ The use of LDAP requires the installation of some additional libraries and some 
 The installation of plugins has a slightly more involved getting-started process. See the [Plugin documentation](docs/plugins.md).
 
 ## Super User Account
+
+If you are testing the application locally, you will need to create a super user below in order to authenticate to the application, even if the credential files are already created from the previous steps.
 
 ### Create Super User via Environment
 
