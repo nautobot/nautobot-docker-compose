@@ -1,6 +1,5 @@
 """Development Tasks."""
 
-from distutils.util import strtobool
 from time import sleep
 import os
 import toml
@@ -19,7 +18,14 @@ def is_truthy(arg):
     """
     if isinstance(arg, bool):
         return arg
-    return bool(strtobool(arg))
+
+    val = str(arg).lower()
+    if val in ("y", "yes", "t", "true", "on", "1"):
+        return True
+    elif val in ("n", "no", "f", "false", "off", "0"):
+        return False
+    else:
+        raise ValueError(f"Invalid truthy value: `{arg}`")
 
 
 # Use pyinvoke configuration for default values, see http://docs.pyinvoke.org/en/stable/concepts/configuration.html
