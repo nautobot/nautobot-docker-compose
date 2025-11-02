@@ -1,12 +1,14 @@
 [tool.poetry]
 name = "nautobot-docker-compose"
-version = "0.1.1"
-description = ""
-authors = ["John Doe <johndoe@mail.com>"]
+version = "0.2.1"
+description = "Docker Compose files used to build Nautobot containers"
+authors = ["Network to Code, LLC <info@networktocode.com>"]
+readme = "README.md"
+package-mode = false
 
 [tool.poetry.dependencies]
-python = ">=3.9,<3.13"
-nautobot = "2.3.6"
+python = ">=3.10,<3.13"
+nautobot = "2.4.20"
 
 # nautobot-example-plugin = {path = "plugins/plugin_example", develop = true}
 
@@ -16,5 +18,5 @@ invoke = "*"
 toml = "*"
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
