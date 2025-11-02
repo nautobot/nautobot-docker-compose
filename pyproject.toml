@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "nautobot-docker-compose"
-version = "0.2.1"
+version = "0.2.0"
 description = "Docker Compose files used to build Nautobot containers"
 authors = ["Network to Code, LLC <info@networktocode.com>"]
 readme = "README.md"
