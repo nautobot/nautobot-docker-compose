@@ -12,8 +12,7 @@ nautobot = "2.4.20"
 
 # nautobot-example-plugin = {path = "plugins/plugin_example", develop = true}
 
-
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 invoke = "*"
 toml = "*"
 
