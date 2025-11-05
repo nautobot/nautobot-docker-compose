@@ -188,13 +188,21 @@ The installation of plugins has a slightly more involved getting-started process
 
 ## Super User Account
 
-If you are testing the application locally, you will need to create a super user below in order to authenticate to the application, even if the credential files are already created from the previous steps.
+A superuser account is required to authenticate to the Nautobot web interface. There are two ways to create a superuser: automatically via environment variables (recommended) or manually via a command.
 
 ### Create Super User via Environment
 
-The Docker container has a Docker entry point script that allows you to create a super user by the usage of Environment variables. This can be done by updating the `creds.env` file environment option of `NAUTOBOT_CREATE_SUPERUSER` to `True`. This will then use the information supplied to create the specified superuser.
+The Docker container can automatically create a superuser on initial startup if the appropriate environment variables are set in your `creds.env` file. To enable this:
 
-### Create Super User via Container
+1. In your `creds.env` file, set `NAUTOBOT_CREATE_SUPERUSER` to `true` (note: the value must be lowercase)
+2. Ensure the following variables are set with your desired values:
+   - `NAUTOBOT_SUPERUSER_NAME` - The username for the superuser
+   - `NAUTOBOT_SUPERUSER_EMAIL` - The email address for the superuser
+   - `NAUTOBOT_SUPERUSER_PASSWORD` - The password for the superuser
+
+The superuser will be automatically created when the containers start. If you need to create additional superusers or the automatic creation didn't work, you can manually create one using the method below.
+
+### Create Super User Manually
 
 After the containers have started:
 
