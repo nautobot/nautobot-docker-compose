@@ -28,6 +28,8 @@ COPY ../plugins /source/plugins
 # Install the nautobot project to include Nautobot
 RUN cd /source && \
     poetry install --no-interaction --no-ansi && \
+    # Try to install the export plugin for Poetry v2, if it fails it's probably v1 so we can ignore it
+    poetry self add poetry-plugin-export || true && \
     mkdir /tmp/dist && \
     poetry export --without-hashes -o /tmp/dist/requirements.txt
 
