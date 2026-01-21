@@ -26,21 +26,21 @@ This repo is designed to provide a custom build of Nautobot to include a set of 
 
 ## Quick Start
 
-1. Have [Docker](https://docs.docker.com/get-docker/) installed on the host (see installation instructions below).
-1. Have [Poetry](https://python-poetry.org/docs/#installation) installed on the host (see installation instructions below).
+- Have [Docker](https://docs.docker.com/get-docker/) installed on the host (see installation instructions below).
+- Have [Poetry](https://python-poetry.org/docs/#installation) installed on the host (see installation instructions below).
 1. Clone this repository to your Nautobot host into the current user directory.
 
 ```bash
 git clone https://github.com/nautobot/nautobot-docker-compose.git
 ```
 
-1. Navigate to the new directory from the git clone.
+2. Navigate to the new directory from the git clone.
 
 ```bash
 cd nautobot-docker-compose
 ```
 
-1. Build Poetry Environment
+3. Build Poetry Environment
 
 ```bash
 poetry shell
@@ -48,39 +48,39 @@ poetry lock
 poetry install
 ```
 
-1. Copy the `local.env.example` file to `local.env` and `creds.example.env` file to `creds.env` in the environments folder.
+4. Copy the `local.env.example` file to `local.env` and `creds.example.env` file to `creds.env` in the environments folder.
 
 ```bash
 cp environments/local.example.env environments/local.env
 cp environments/creds.example.env environments/creds.env
 ```
 
-1. Update the `.env` files for your environment. **THESE SHOULD BE CHANGED** for proper security and the `creds.env` file should never be synchronized to git as it should contain all secrets for the environment!
+5. Update the `.env` files for your environment. **THESE SHOULD BE CHANGED** for proper security and the `creds.env` file should never be synchronized to git as it should contain all secrets for the environment!
 
 ```bash
 vi environments/local.env
 vi environments/creds.env
 ```
 
-1. Update the `local.env` and `creds.env` files to be only available for the current user.
+6. Update the `local.env` and `creds.env` files to be only available for the current user.
 
 ```bash
 chmod 0600 environments/local.env environments/creds.env
 ```
 
-1. It is recommended to copy the `invoke.example.yml` file to `invoke.yml` so that you can make adjustments to your configuration as needed.
+7. It is recommended to copy the `invoke.example.yml` file to `invoke.yml` so that you can make adjustments to your configuration as needed.
 
 ```bash
 cp invoke.example.yml invoke.yml
 ```
 
-1. Run `invoke build` to build the containers.
+8. Run `invoke build` to build the containers.
 
 ```bash
 invoke build
 ```
 
-1. Run `invoke debug` to start the containers in debug mode or `invoke start` to run as a background process.
+9. Run `invoke debug` to start the containers in debug mode or `invoke start` to run as a background process.
 
 ```bash
 invoke debug
