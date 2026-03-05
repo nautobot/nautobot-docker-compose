@@ -7,8 +7,8 @@ readme = "README.md"
 package-mode = false
 
 [tool.poetry.dependencies]
-python = ">=3.10,<3.13"
-nautobot = "2.4.20"
+python = ">=3.10,<3.14"
+nautobot = "3.0.8"
 
 # nautobot-example-plugin = {path = "plugins/plugin_example", develop = true}
 
