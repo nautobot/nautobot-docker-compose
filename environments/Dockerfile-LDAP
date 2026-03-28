@@ -17,11 +17,10 @@ CMD ["nautobot-server", "runserver", "0.0.0.0:8080", "--insecure"]
 
 RUN apt-get update && \
     apt-get upgrade -y && \
+    apt-get install -y libldap2-dev libsasl2-dev libssl-dev && \
     apt-get autoremove -y && \
     apt-get clean all && \
     rm -rf /var/lib/apt/lists/*
-
-RUN apt-get install -y libldap2-dev libsasl2-dev libssl-dev
 
 COPY ./pyproject.toml ./poetry.lock /source/
 COPY ../plugins /source/plugins

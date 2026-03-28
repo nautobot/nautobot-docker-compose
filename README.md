@@ -1,10 +1,10 @@
 # nautobot-docker-compose
 
-Network to Code has an existing published Nautobot Docker Image on Docker Hub. See [here](https://hub.docker.com/repository/docker/networktocode/nautobot). This project uses Docker Compose. The Docker compose file in this project pulls that Nautobot Docker image using the latest stable Nautobot release along with several other Docker images required for Nautobot to function. See the diagram below. This project is for those looking for a multi-container single-node install for Nautobot often coupled with backup & HA capabilities from their hypervisor manager.
+Network to Code publishes Nautobot container images on GitHub Container Registry. See [ghcr.io/nautobot/nautobot](https://github.com/nautobot/nautobot/pkgs/container/nautobot). This project uses Docker Compose to build a local Nautobot image from those upstream artifacts and run it alongside the supporting services Nautobot requires. See the diagram below. This project is for those looking for a multi-container single-node install for Nautobot often coupled with backup & HA capabilities from their hypervisor manager.
 
 ![Container Stack](docs/img/container_stack.png)
 
-By default, this project deploys the Nautobot application, a single worker container, Redis containers, and PostgreSQL. It does not deploy NGINX, SSL, or any Nautobot plugins. However, the project is extensible to allow users to tailor it to their specific requirements. For example, if you need to deploy [SSL](docs/create_ssl_cert.md) or [plugins](docs/plugins.md), see the docs linked. The web server used on the application is [pyuwsgi](https://uwsgi-docs.readthedocs.io/en/latest/).
+By default, this project deploys the Nautobot application, a Celery worker, a Celery beat scheduler, Redis, and PostgreSQL. It does not deploy NGINX, SSL, or any Nautobot plugins. However, the project is extensible to allow users to tailor it to their specific requirements. For example, if you need to deploy [SSL](docs/create_ssl_cert.md) or [plugins](docs/plugins.md), see the docs linked. The web server used on the application is [pyuwsgi](https://uwsgi-docs.readthedocs.io/en/latest/).
 
 ## Docker Compose
 
@@ -215,11 +215,12 @@ Example Output:
 
 ```bash
 ❯ docker container ls
-CONTAINER ID   IMAGE                           COMMAND                  CREATED         STATUS                   PORTS                                                                                  NAMES
-143f10daa229   networktocode/nautobot:latest   "nautobot-server rqw…"   2 minutes ago   Up 2 minutes (healthy)                                                                                          nautobot-docker-compose_celery_worker_1
-bb29124d7acb   networktocode/nautobot:latest   "/docker-entrypoint.…"   2 minutes ago   Up 2 minutes (healthy)   0.0.0.0:8080->8080/tcp, :::8080->8080/tcp, 0.0.0.0:8443->8443/tcp, :::8443->8443/tcp   nautobot-docker-compose_nautobot_1
-ad57ac1749b3   redis:alpine                    "docker-entrypoint.s…"   2 minutes ago   Up 2 minutes             6379/tcp                                                                               nautobot-docker-compose_redis_1
-5ab83264e6fe   postgres:10                     "docker-entrypoint.s…"   2 minutes ago   Up 2 minutes             5432/tcp                                                                               nautobot-docker-compose_postgres_1
+CONTAINER ID   IMAGE                                  COMMAND                  CREATED         STATUS                    PORTS                                     NAMES
+143f10daa229   yourrepo/nautobot-docker-compose:local "nautobot-server cel…"   2 minutes ago   Up 2 minutes (healthy)                                              nautobot-docker-compose-celery-worker-1
+bb29124d7acb   yourrepo/nautobot-docker-compose:local "nautobot-server cel…"   2 minutes ago   Up 2 minutes                                                        nautobot-docker-compose-celery-beat-1
+ad57ac1749b3   yourrepo/nautobot-docker-compose:local "/docker-entrypoint.…"   2 minutes ago   Up 2 minutes (healthy)    0.0.0.0:8080->8080/tcp, [::]:8080->8080/tcp   nautobot-docker-compose-nautobot-1
+5ab83264e6fe   redis:6-alpine                         "docker-entrypoint.s…"   2 minutes ago   Up 2 minutes              6379/tcp                                  nautobot-docker-compose-redis-1
+1c2d3e4f5a6b   postgres:13-alpine                     "docker-entrypoint.s…"   2 minutes ago   Up 2 minutes (healthy)    5432/tcp                                  nautobot-docker-compose-db-1
 ```
 
 2. Execute Create Super User Command and follow the prompts

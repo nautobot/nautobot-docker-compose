@@ -19,19 +19,6 @@ TESTING = len(sys.argv) > 1 and sys.argv[1] == "test"
 # Redis
 #
 
-# The django-redis cache is used to establish concurrent locks using Redis.
-#
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": parse_redis_connection(redis_database=0),
-        "TIMEOUT": 300,
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        },
-    }
-}
-
 # Redis Cacheops
 CACHEOPS_REDIS = parse_redis_connection(redis_database=1)
 
