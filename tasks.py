@@ -1,7 +1,11 @@
 """Development Tasks."""
 
-from time import sleep
+import json
 import os
+import re
+from time import sleep
+from urllib.request import urlopen
+
 import toml
 from invoke import Collection, task as invoke_task
 
@@ -290,3 +294,93 @@ def db_import(context):
 
     print("Importing DB...\n")
     docker_compose(context, import_cmd, pty=True)
+
+
+# ------------------------------------------------------------------------------
+# NAUTOBOT VERSION UPDATE (for CI / pyproject.toml sync with PyPI)
+# ------------------------------------------------------------------------------
+PYPI_NAUTOBOT_URL = "https://pypi.org/pypi/nautobot/json"
+
+
+def _fetch_nautobot_metadata():
+    """Fetch latest Nautobot version and requires_python from PyPI."""
+    with urlopen(PYPI_NAUTOBOT_URL) as response:
+        data = json.load(response)
+    info = data.get("info", {})
+    version = info.get("version", "")
+    requires_python = info.get("requires_python") or ""
+    if requires_python:
+        # Normalize: PyPI may use '<3.14,>=3.10' or '>=3.10,<3.14'
+        parts = sorted(
+            requires_python.split(","),
+            key=lambda x: (x.strip().startswith("<"), x),
+        )
+        requires_python = ",".join(p.strip() for p in parts)
+    return version, requires_python
+
+
+def _update_pyproject_nautobot(version, requires_python, pyproject_path="pyproject.toml"):
+    """Update nautobot and python version in pyproject.toml."""
+    with open(pyproject_path, "r", encoding="utf-8") as f:
+        content = f.read()
+
+    content = re.sub(
+        r'^(nautobot\s*=\s*)"[^"]*"',
+        rf'\1"{version}"',
+        content,
+        flags=re.MULTILINE,
+    )
+    if requires_python:
+        content = re.sub(
+            r'^(python\s*=\s*)"[^"]*"',
+            rf'\1"{requires_python}"',
+            content,
+            flags=re.MULTILINE,
+        )
+
+    with open(pyproject_path, "w", encoding="utf-8") as f:
+        f.write(content)
+
+
+@task
+def get_latest_nautobot(context):
+    """Fetch and print the latest Nautobot version and requires_python from PyPI."""
+    version, requires_python = _fetch_nautobot_metadata()
+    print(f"Latest Nautobot: {version}, Requires-Python: {requires_python}")
+    return version, requires_python
+
+
+@task(
+    help={
+        "version": "Nautobot version to set (default: fetch from PyPI)",
+        "requires_python": "Python version constraint (default: fetch from PyPI)",
+        "output": "If set (e.g. $GITHUB_OUTPUT), append version= and requires_python= for CI",
+    }
+)
+def update_nautobot_deps(
+    context,
+    version=None,
+    requires_python=None,
+    output=None,
+):
+    """
+    Update pyproject.toml with the latest Nautobot version and Python constraint from PyPI.
+
+    Fetches metadata from PyPI if version/requires_python not provided.
+    Use --output=$GITHUB_OUTPUT in CI to write values for workflow outputs.
+    """
+    if version is None or requires_python is None:
+        fetched_version, fetched_rp = _fetch_nautobot_metadata()
+        version = version or fetched_version
+        requires_python = requires_python or fetched_rp
+
+    _update_pyproject_nautobot(version, requires_python)
+
+    print(f"Updated nautobot to {version}")
+    if requires_python:
+        print(f"Updated python to {requires_python}")
+
+    if output:
+        with open(output, "a", encoding="utf-8") as f:
+            f.write(f"version={version}\n")
+            f.write(f"requires_python={requires_python}\n")
