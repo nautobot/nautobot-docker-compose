@@ -1,0 +1,69 @@
+<div class="container-fluid px-0 mt-3">
+  <div class="d-flex align-items-baseline justify-content-between mb-3">
+    <h2 class="mb-0">Effective EOX / Lifecycle</h2>
+  </div>
+
+  {% for section in sections %}
+    <section class="mb-4">
+      <div class="d-flex flex-wrap align-items-baseline gap-2 mb-2">
+        <h3 class="mb-0">{{ section.title }}</h3>
+        {% if section.source %}
+          <span class="text-muted">{{ section.source }}</span>
+        {% endif %}
+        <span class="badge {{ section.status_class }}">{{ section.status_label }}</span>
+      </div>
+
+      {% if section.record_label %}
+        <div class="text-muted small mb-2">{{ section.record_label }}</div>
+      {% endif %}
+
+      {% if not section.record %}
+        <div class="alert alert-warning py-2 px-3 mb-2">No matching DLM record was found.</div>
+      {% endif %}
+
+      <div class="table-responsive">
+        <table class="table table-sm align-middle mb-2">
+          <tbody>
+            {% for field in section.native_fields %}
+              <tr>
+                <th scope="row" class="w-25">{{ field.label }}</th>
+                <td>
+                  {% if field.url %}
+                    <a href="{{ field.url }}" target="_blank" rel="noopener">{{ field.value|default:"—" }}</a>
+                  {% else %}
+                    {{ field.value|default:"—" }}
+                  {% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+
+            {% if section.custom_fields %}
+              <tr class="table-light">
+                <th scope="row" colspan="2">Cisco-specific fields</th>
+              </tr>
+              {% for field in section.custom_fields %}
+                <tr>
+                  <th scope="row" class="w-25">{{ field.label }}</th>
+                  <td>
+                    {% if field.url %}
+                      <a href="{{ field.url }}" target="_blank" rel="noopener">{{ field.value|default:"—" }}</a>
+                    {% else %}
+                      {{ field.value|default:"—" }}
+                    {% endif %}
+                  </td>
+                </tr>
+              {% endfor %}
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+
+      {% if section.notes %}
+        <div class="border-start ps-3 mt-2">
+          <div class="text-muted small mb-1">Notes</div>
+          <pre class="mb-0 text-body-secondary" style="white-space: pre-wrap;">{{ section.notes }}</pre>
+        </div>
+      {% endif %}
+    </section>
+  {% endfor %}
+</div>
