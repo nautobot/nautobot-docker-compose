@@ -296,6 +296,7 @@ fabric.properties
 
 ### vscode ###
 .vscode/*
+.vs/*
 *.code-workspace
 
 # Rando
