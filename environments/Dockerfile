@@ -56,6 +56,7 @@ WORKDIR /source
 FROM nautobot-base as nautobot
 
 ARG PYTHON_VER
+
 # Copy from base the required python libraries and binaries
 COPY --from=builder /tmp/dist /tmp/dist
 COPY --from=builder /opt/nautobot /opt/nautobot
