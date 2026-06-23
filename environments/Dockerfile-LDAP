@@ -23,9 +23,9 @@ RUN apt-get update && \
 
 RUN apt-get install -y libldap2-dev libsasl2-dev libssl-dev
 
-COPY ./pyproject.toml ./poetry.lock /source/
+COPY ../pyproject.toml ../poetry.lock /source/
 COPY ../plugins /source/plugins
-# COPY ./packages /source/packages
+# COPY ../packages /source/packages
 
 # Install the nautobot project to include Nautobot
 RUN cd /source && \
@@ -38,16 +38,16 @@ RUN cd /source && \
 RUN pip3 install --upgrade pip wheel && pip3 install django-auth-ldap
 
 # -------------------------------------------------------------------------------------
-# Install all included plugins
+# Build Apps in plugins folder
 # -------------------------------------------------------------------------------------
-RUN for plugin in /source/plugins/*; do \
-        cd $plugin && \
-        poetry build && \
-        cp dist/*.whl /tmp/dist; \
-    done
+# RUN for plugin in /source/plugins/*; do \
+#         cd $plugin && \
+#         poetry build && \
+#         cp dist/*.whl /tmp/dist; \
+#     done
 
-COPY ./jobs /opt/nautobot/jobs
-# COPY ./metrics /opt/nautobot/metrics
+COPY ../jobs /opt/nautobot/jobs
+# COPY ../metrics /opt/nautobot/metrics
 COPY ../config/nautobot_config.py.ldap /opt/nautobot/nautobot_config.py
 
 WORKDIR /source
@@ -58,21 +58,18 @@ WORKDIR /source
 # Final Image
 # -------------------------------------------------------------------------------------
 FROM nautobot-base as nautobot
+
 ARG PYTHON_VER
 
 # Copy from base the required python libraries and binaries
 COPY --from=builder /tmp/dist /tmp/dist
+COPY --from=builder /opt/nautobot /opt/nautobot
 COPY --from=builder /usr/local/lib/python${PYTHON_VER}/site-packages /usr/local/lib/python${PYTHON_VER}/site-packages
 COPY --from=builder /usr/local/bin /usr/local/bin
-COPY --from=builder /opt/nautobot /opt/nautobot
-# COPY ./packages /source/packages
+# COPY ../packages /source/packages
 
-RUN grep -v /source/plugins /tmp/dist/requirements.txt > /tmp/dist/new_requirements.txt && \
-    pip install -r /tmp/dist/new_requirements.txt && \
-    pip install /tmp/dist/*.whl && \
-    rm -rf /source /tmp/dist && \
-    chown -R nautobot:nautobot /opt/nautobot
+# Verify that pyuwsgi was installed correctly, i.e. with SSL support
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN pyuwsgi --cflags | sed 's/ /\n/g' | grep -e "^-DUWSGI_SSL$"
 
 USER nautobot
-
-WORKDIR /opt/nautobot
