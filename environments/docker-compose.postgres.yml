@@ -1,7 +1,7 @@
 ---
 services:
   db:
-    image: "postgres:13-alpine"
+    image: "postgres:17-alpine"
     env_file:
       - "local.env"
       - "creds.env"
