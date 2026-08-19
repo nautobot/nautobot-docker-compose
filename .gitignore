@@ -304,3 +304,7 @@ creds.env
 
 # Invoke overrides
 invoke.yml
+
+# Secrets / generated artifacts
+jobs/github.token
+jobs/batfish_snapshot/
