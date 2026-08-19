@@ -1,0 +1,44 @@
+{
+  "integrations": {
+    "ServiceNow": {
+      "integration_name": "ServiceNow",
+      "url": "https://dev316890.service-now.com",
+      "http_method": "POST",
+      "verify_ssl": false,
+      "secrets": [
+        {"name": "servicenow-username", "secret_type": "Username", "env_var": "NAUTOBOT_SSOT_SNOW_USERNAME"},
+        {"name": "servicenow-password", "secret_type": "Password", "env_var": "NAUTOBOT_SSOT_SNOW_PASSWORD"}
+      ]
+    },
+    "DNA Center": {
+      "integration_name": "DNA Center",
+      "url": "",
+      "http_method": "POST",
+      "verify_ssl": false,
+      "secrets": [
+        {"name": "dna-center-username", "secret_type": "Username", "env_var": "NAUTOBOT_SSOT_DNAC_USERNAME"},
+        {"name": "dna-center-password", "secret_type": "Password", "env_var": "NAUTOBOT_SSOT_DNAC_PASSWORD"}
+      ]
+    },
+    "SD-WAN": {
+      "integration_name": "SD-WAN",
+      "url": "",
+      "http_method": "POST",
+      "verify_ssl": false,
+      "secrets": [
+        {"name": "sdwan-username", "secret_type": "Username", "env_var": "NAUTOBOT_SSOT_SDWAN_USERNAME"},
+        {"name": "sdwan-password", "secret_type": "Password", "env_var": "NAUTOBOT_SSOT_SDWAN_PASSWORD"}
+      ]
+    },
+    "SolarWinds": {
+      "integration_name": "SolarWinds",
+      "url": "",
+      "http_method": "POST",
+      "verify_ssl": false,
+      "secrets": [
+        {"name": "solarwinds-username", "secret_type": "Username", "env_var": "NAUTOBOT_SSOT_SOLARWINDS_USERNAME"},
+        {"name": "solarwinds-password", "secret_type": "Password", "env_var": "NAUTOBOT_SSOT_SOLARWINDS_PASSWORD"}
+      ]
+    }
+  }
+}

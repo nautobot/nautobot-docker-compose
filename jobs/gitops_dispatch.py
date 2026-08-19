@@ -62,8 +62,10 @@ class DispatchGitOps(Job):
     use_case = TextVar(description="Natural-language use case for this change", required=False, default="")
     ai_fix = TextVar(description="Set 'true' when this run is an AI-proposed fix (re-approval)", required=False, default="")
     incident_id = TextVar(description="Agent incident id for completion callback", required=False, default="")
+    stage = TextVar(description="Pipeline stage: twin-gate or apply", required=False, default="twin-gate")
+    run_id = TextVar(description="Agent execution run id for event logging", required=False, default="")
 
-    def run(self, change_number="", description="", change_type="bgp-flap", repos="nautobot-ansible", target="core-rtr-01", peer="10.99.0.12", candidate_config="", expect="", use_case="", ai_fix="", incident_id=""):
+    def run(self, change_number="", description="", change_type="bgp-flap", repos="nautobot-ansible", target="core-rtr-01", peer="10.99.0.12", candidate_config="", expect="", use_case="", ai_fix="", incident_id="", stage="twin-gate", run_id=""):
         if not os.path.exists(TOKEN_PATH):
             self.logger.error("GitHub token file not found at %s", TOKEN_PATH)
             return
@@ -93,6 +95,10 @@ class DispatchGitOps(Job):
                 }
                 if incident_id:
                     inputs["incident_id"] = incident_id
+                if run_id:
+                    inputs["run_id"] = run_id
+                if stage:
+                    inputs["stage"] = stage
                 if candidate_config:
                     inputs["candidate_config_b64"] = base64.b64encode(candidate_config.encode("utf-8")).decode("ascii")
                 if expect:
