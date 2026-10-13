@@ -259,8 +259,7 @@ def import_nautobot_data(context):
 @task
 def db_export(context):
     """Export the database from the dev environment to nautobot.sql."""
-    docker_compose(context, "up -d db")
-    sleep(2)  # Wait for the database to be ready
+    docker_compose(context, "up --wait db")
 
     print("Exporting the database as an SQL dump...")
     if "docker-compose.mysql.yml" in context.nautobot_docker_compose.compose_files:
@@ -280,8 +279,7 @@ def db_import(context):
     print("Importing Database into Development...\n")
 
     print("Starting Postgres for DB import...\n")
-    docker_compose(context, "up -d db")
-    sleep(2)
+    docker_compose(context, "up --wait db")
 
     print("Copying DB Dump to DB container...\n")
     if "docker-compose.mysql.yml" in context.nautobot_docker_compose.compose_files:
